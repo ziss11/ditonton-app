@@ -1,0 +1,61 @@
+{
+    "type": "Tv",
+    "backdrop_path": "backdropPath",
+    "episode_run_time": [
+        54
+    ],
+    "first_air_date": "firstAirDate",
+    "genres": [
+        {
+            "id": 10759,
+            "name": "name"
+        }
+    ],
+    "homepage": "homePage",
+    "id": 93405,
+    "in_production": false,
+    "languages": [
+        "en",
+        "el"
+    ],
+    "last_air_date": "lastAirDate",
+    "last_episode_to_air": {
+        "air_date": "airDate",
+        "episode_number": 9,
+        "id": 3222798,
+        "name": "name",
+        "overview": "overview",
+        "production_code": "",
+        "season_number": 1,
+        "still_path": "stillPath",
+        "vote_average": 7.3,
+        "vote_count": 12
+    },
+    "name": "name",
+    "next_episode_to_air": null,
+    "number_of_episodes": 9,
+    "number_of_seasons": 1,
+    "origin_country": [
+        "KR"
+    ],
+    "original_language": "ko",
+    "original_name": "originalName",
+    "overview": "overview",
+    "popularity": 6379.492,
+    "poster_path": "posterPath",
+    "seasons": [
+        {
+            "air_date": "2021-09-17",
+            "episode_count": 9,
+            "id": 131977,
+            "name": "Season 1",
+            "overview": "overview",
+            "poster_path": "posterPath",
+            "season_number": 1
+        }
+    ],
+    "status": "Ended",
+    "tagline": "tagline",
+    "vote_average": 7.9,
+    "vote_count": 7705
+}
