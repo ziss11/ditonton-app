@@ -1,9 +1,9 @@
-import 'package:core/core.dart';
 import 'package:core/domain/entities/tv_series/tv_series.dart';
-import 'package:core/presentation/provider/watchlist_notifier.dart';
+import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:core/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistPage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _WatchlistMoviesPageState extends State<WatchlistPage> {
     super.initState();
     Future.microtask(
       () {
-        Provider.of<WatchlistNotifier>(context, listen: false).fetchWatchlist();
+        context.read<WatchlistCubit>().fetchWatchlist();
       },
     );
   }
@@ -34,48 +34,53 @@ class _WatchlistMoviesPageState extends State<WatchlistPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistState == RequestState.loading) {
+        child: BlocBuilder<WatchlistCubit, WatchlistState>(
+          builder: (context, watchlist) {
+            if (watchlist is WatchlistInitial) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: const Center(
+                  key: Key('empty_message'),
+                  child: Text(
+                    'Watchlist is Empty',
+                  ),
+                ),
+              );
+            } else if (watchlist is WatchlistLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.watchlistState == RequestState.loaded) {
-              if (data.watchlist.isNotEmpty) {
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    final watchlist = data.watchlist[index];
-                    final tvWatchlist = TvSeries.watchlist(
-                      id: watchlist.id,
-                      overview: watchlist.overview,
-                      posterPath: watchlist.posterPath,
-                      title: watchlist.title,
-                      type: watchlist.type,
-                    );
-                    if (watchlist.type == 'Movie') {
-                      return MovieCard(movie: watchlist);
-                    } else {
-                      return TvCard(tvSeries: tvWatchlist);
-                    }
-                  },
-                  itemCount: data.watchlist.length,
-                );
-              } else {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: const Center(
-                    key: Key('empty_message'),
-                    child: Text(
-                      'Wathlist is Empty',
-                    ),
-                  ),
-                );
-              }
-            } else {
-              return Center(
-                key: const Key('error_message'),
-                child: Text(data.message),
+            } else if (watchlist is WatchlistLoaded) {
+              return ListView.builder(
+                itemBuilder: (context, index) {
+                  final data = watchlist.watchlist[index];
+                  final tvWatchlist = TvSeries.watchlist(
+                    id: data.id,
+                    overview: data.overview,
+                    posterPath: data.posterPath,
+                    title: data.title,
+                    type: data.type,
+                  );
+                  if (data.type == 'Movie') {
+                    return MovieCard(movie: data);
+                  } else {
+                    return TvCard(tvSeries: tvWatchlist);
+                  }
+                },
+                itemCount: watchlist.watchlist.length,
               );
+            } else if (watchlist is WatchlistMessage) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: Center(
+                  key: const Key('error_message'),
+                  child: Text(
+                    watchlist.watchlistMessage,
+                  ),
+                ),
+              );
+            } else {
+              return const SizedBox();
             }
           },
         ),

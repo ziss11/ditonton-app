@@ -1,26 +1,27 @@
 import 'package:core/core.dart';
 import 'package:core/domain/entities/tv_series/episode.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_detail_notifier.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
 import 'package:core/presentation/widgets/episode_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
-import '../pages/tv_series/tv_series_detail_page_test.mocks.dart';
+import '../../dummy_data/tv_series/dummy_tv_series_object.dart';
+import 'episode_list_test.mocks.dart';
 
-@GenerateMocks([TvSeriesDetailNotifier])
+@GenerateMocks([TvSeriesDetailCubit])
 void main() {
-  late MockTvSeriesDetailNotifier mockTvSeriesDetailNotifier;
+  late MockTvSeriesDetailCubit mockCubit;
 
   setUp(() {
-    mockTvSeriesDetailNotifier = MockTvSeriesDetailNotifier();
+    mockCubit = MockTvSeriesDetailCubit();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TvSeriesDetailNotifier>.value(
-      value: mockTvSeriesDetailNotifier,
+    return BlocProvider<TvSeriesDetailCubit>.value(
+      value: mockCubit,
       child: MaterialApp(
         home: body,
       ),
@@ -30,9 +31,9 @@ void main() {
   testWidgets(
     "should display episode list when data is loaded",
     (WidgetTester tester) async {
-      when(mockTvSeriesDetailNotifier.episodeState)
-          .thenReturn(RequestState.loaded);
-      when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
+      when(mockCubit.stream).thenAnswer(
+          (_) => Stream.value(TvSeriesEpisodeLoaded(testEpisodeList)));
+      when(mockCubit.state).thenReturn(TvSeriesEpisodeLoaded(testEpisodeList));
 
       final listFinder = find.byKey(const Key('episode_list'));
 

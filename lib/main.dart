@@ -1,10 +1,14 @@
 import 'package:about/about_page.dart';
 import 'package:core/core.dart';
+import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/movie/movie_detail_page.dart';
 import 'package:core/presentation/pages/movie/home_movie_page.dart';
 import 'package:core/presentation/pages/movie/popular_movies_page.dart';
 import 'package:core/presentation/pages/watchlist_page.dart';
-import 'package:core/presentation/provider/watchlist_notifier.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/presentation/pages/movie/top_rated_movies_page.dart';
@@ -14,12 +18,6 @@ import 'package:core/presentation/pages/tv_series/home_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/now_playing_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/popular_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/tv_series_detail_page.dart';
-import 'package:core/presentation/provider/movie/movie_detail_notifier.dart';
-import 'package:core/presentation/provider/movie/movie_list_notifier.dart';
-import 'package:core/presentation/provider/movie/popular_movies_notifier.dart';
-import 'package:core/presentation/provider/movie/top_rated_movies_notifier.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_detail_notifier.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_list_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton/injection.dart' as di;
@@ -37,26 +35,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<MovieListCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<MovieDetailCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<WatchlistCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<TvSeriesDetailCubit>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSeriesDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSeriesListNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<TvSeriesListCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<SearchMoviesCubit>(),

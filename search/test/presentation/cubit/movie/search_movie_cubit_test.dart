@@ -47,7 +47,25 @@ void main() {
   const tQuery = 'spiderman';
 
   blocTest<SearchMoviesCubit, SearchMoviesState>(
-    'Should emit [Loading, HasData] when data is gotten successfully',
+    'Should emit [Loading, Loaded] when data is gotten successfully',
+    build: () {
+      when(mockSearchMovies.execute(tQuery))
+          .thenAnswer((_) async => const Right([]));
+      return searchCubit;
+    },
+    act: (cubit) => cubit.fetchSearchMovies(tQuery),
+    wait: const Duration(milliseconds: 500),
+    expect: () => [
+      SearchMoviesLoading(),
+      SearchMoviesInitial(),
+    ],
+    verify: (cubit) {
+      verify(mockSearchMovies.execute(tQuery));
+    },
+  );
+
+  blocTest<SearchMoviesCubit, SearchMoviesState>(
+    'Should emit [Loading, Initial] when data is gotten successfully',
     build: () {
       when(mockSearchMovies.execute(tQuery))
           .thenAnswer((_) async => Right(tMovieList));

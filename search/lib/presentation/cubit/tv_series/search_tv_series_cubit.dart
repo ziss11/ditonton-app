@@ -22,9 +22,13 @@ class SearchTvSeriesCubit extends Cubit<SearchTvSeriesState> {
       (failure) => emit(
         SearchTvSeriesError(failure.message),
       ),
-      (data) => emit(
-        SearchTvSeriesLoaded(data),
-      ),
+      (data) async {
+        if (data.isNotEmpty) {
+          emit(SearchTvSeriesLoaded(data));
+        } else {
+          emit(SearchTvSeriesInitial());
+        }
+      },
     );
   }
 }

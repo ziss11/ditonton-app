@@ -40,36 +40,42 @@ class SearchMoviePage extends StatelessWidget {
             ),
             BlocBuilder<SearchMoviesCubit, SearchMoviesState>(
               builder: (context, state) {
-                if (state is SearchMoviesLoading) {
+                if (state is SearchMoviesInitial) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: const Center(
+                      key: Key('empty_message'),
+                      child: Text(
+                        'Search Not Found',
+                      ),
+                    ),
+                  );
+                } else if (state is SearchMoviesLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is SearchMoviesLoaded) {
-                  if (state.result.isNotEmpty) {
-                    return Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemBuilder: (context, index) {
-                          final result = state.result[index];
-                          return MovieCard(movie: result);
-                        },
-                        itemCount: state.result.length,
-                      ),
-                    );
-                  } else {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height / 2,
-                      child: const Center(
-                        child: Text(
-                          'Search Not Found',
-                        ),
-                      ),
-                    );
-                  }
-                } else {
                   return Expanded(
-                    child: Container(),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemBuilder: (context, index) {
+                        return MovieCard(
+                          movie: state.result[index],
+                        );
+                      },
+                      itemCount: state.result.length,
+                    ),
                   );
+                } else if (state is SearchMoviesError) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(
+                      key: const Key('error_message'),
+                      child: Text(state.message),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
                 }
               },
             ),

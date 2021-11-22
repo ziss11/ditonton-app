@@ -64,6 +64,24 @@ void main() {
   );
 
   blocTest<SearchTvSeriesCubit, SearchTvSeriesState>(
+    'Should emit [Loading, Initial] when data is gotten is successfully',
+    build: () {
+      when(mockSearchTvSeries.execute(tQuery))
+          .thenAnswer((_) async => const Right([]));
+      return searchCubit;
+    },
+    act: (cubit) => cubit.fetchSearchTvSeries(tQuery),
+    wait: const Duration(milliseconds: 500),
+    expect: () => [
+      SearchTvSeriesLoading(),
+      SearchTvSeriesInitial(),
+    ],
+    verify: (cubit) => {
+      cubit.searchTvSeries.execute(tQuery),
+    },
+  );
+
+  blocTest<SearchTvSeriesCubit, SearchTvSeriesState>(
     'Should emit [Loading, Error] when Error',
     build: () {
       when(mockSearchTvSeries.execute(tQuery))

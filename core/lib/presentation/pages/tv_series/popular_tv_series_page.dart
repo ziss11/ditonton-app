@@ -1,7 +1,7 @@
-import 'package:core/presentation/provider/tv_series/tv_series_list_notifier.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
 import 'package:core/presentation/widgets/tv_card_list.dart';
-import 'package:core/utils/state_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class PopularTvSeriesPage extends StatefulWidget {
@@ -16,9 +16,9 @@ class _PopularTvSeriesPageState extends State<PopularTvSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<TvSeriesListNotifier>(context, listen: false)
-            .fetchPopularTvSeriess());
+    Future.microtask(
+      () => context.read<TvSeriesListCubit>().fetchPopularTv(),
+    );
   }
 
   @override
@@ -29,24 +29,28 @@ class _PopularTvSeriesPageState extends State<PopularTvSeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TvSeriesListNotifier>(
-          builder: (context, data, child) {
-            if (data.popularTvSeriessState == RequestState.loading) {
+        child: BlocBuilder<TvSeriesListCubit, TvSeriesListState>(
+          builder: (context, data) {
+            if (data is TvSeriesPopularLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.popularTvSeriessState == RequestState.loaded) {
+            } else if (data is TvSeriesPopularLoaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return TvCard(tvSeries: data.popularTvSeriess[index]);
+                  return TvCard(
+                    tvSeries: data.popularTvSeries[index],
+                  );
                 },
-                itemCount: data.popularTvSeriess.length,
+                itemCount: data.popularTvSeries.length,
               );
-            } else {
+            } else if (data is TvSeriesPopularError) {
               return Center(
                 key: const Key('error_message'),
                 child: Text(data.message),
               );
+            } else {
+              return const SizedBox();
             }
           },
         ),

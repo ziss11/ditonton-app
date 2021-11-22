@@ -1,7 +1,8 @@
 import 'package:core/core.dart';
-import 'package:core/presentation/provider/movie/popular_movies_notifier.dart';
+import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class PopularMoviesPage extends StatefulWidget {
@@ -17,9 +18,9 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<PopularMoviesNotifier>(context, listen: false)
-            .fetchPopularMovies());
+    Future.microtask(
+      () => context.read<MovieListCubit>().fetchPopularMovie(),
+    );
   }
 
   @override
@@ -30,24 +31,26 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularMoviesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+        child: BlocBuilder<MovieListCubit, MovieListState>(
+          builder: (context, popular) {
+            if (popular is MoviePopularLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
+            } else if (popular is MoviePopularLoaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return MovieCard(movie: data.movies[index]);
+                  return MovieCard(movie: popular.popularMovie[index]);
                 },
-                itemCount: data.movies.length,
+                itemCount: popular.popularMovie.length,
               );
-            } else {
+            } else if (popular is MoviePopularError) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(popular.message),
               );
+            } else {
+              return const SizedBox();
             }
           },
         ),

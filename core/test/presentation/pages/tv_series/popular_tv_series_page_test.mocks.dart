@@ -2,18 +2,16 @@
 // in core/test/presentation/pages/tv_series/popular_tv_series_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i8;
-import 'dart:ui' as _i9;
+import 'dart:async' as _i6;
 
-import 'package:core/core.dart' as _i7;
-import 'package:core/domain/entities/tv_series/tv_series.dart' as _i6;
+import 'package:bloc/bloc.dart' as _i7;
 import 'package:core/domain/usecases/tv_series/get_now_playing_tv_series.dart'
     as _i2;
 import 'package:core/domain/usecases/tv_series/get_popular_tv_series.dart'
     as _i3;
 import 'package:core/domain/usecases/tv_series/get_top_rated_tv_series.dart'
     as _i4;
-import 'package:core/presentation/provider/tv_series/tv_series_list_notifier.dart'
+import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart'
     as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -35,90 +33,94 @@ class _FakeGetPopularTvSeries_1 extends _i1.Fake
 class _FakeGetTopRatedTvSeries_2 extends _i1.Fake
     implements _i4.GetTopRatedTvSeries {}
 
-/// A class which mocks [TvSeriesListNotifier].
+class _FakeTvSeriesListState_3 extends _i1.Fake
+    implements _i5.TvSeriesListState {}
+
+class _FakeStreamSubscription_4<T> extends _i1.Fake
+    implements _i6.StreamSubscription<T> {}
+
+/// A class which mocks [TvSeriesListCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTvSeriesListNotifier extends _i1.Mock
-    implements _i5.TvSeriesListNotifier {
-  MockTvSeriesListNotifier() {
+class MockTvSeriesListCubit extends _i1.Mock implements _i5.TvSeriesListCubit {
+  MockTvSeriesListCubit() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.GetNowPlayingTvSeries get getNowPlayingTvSeries =>
-      (super.noSuchMethod(Invocation.getter(#getNowPlayingTvSeries),
+  _i2.GetNowPlayingTvSeries get nowPlayingTvSeries =>
+      (super.noSuchMethod(Invocation.getter(#nowPlayingTvSeries),
               returnValue: _FakeGetNowPlayingTvSeries_0())
           as _i2.GetNowPlayingTvSeries);
   @override
-  _i3.GetPopularTvSeries get getPopularTvSeries =>
-      (super.noSuchMethod(Invocation.getter(#getPopularTvSeries),
+  _i3.GetPopularTvSeries get popularTvSeries =>
+      (super.noSuchMethod(Invocation.getter(#popularTvSeries),
           returnValue: _FakeGetPopularTvSeries_1()) as _i3.GetPopularTvSeries);
   @override
-  _i4.GetTopRatedTvSeries get getTopRatedTvSeries => (super.noSuchMethod(
-      Invocation.getter(#getTopRatedTvSeries),
+  _i4.GetTopRatedTvSeries get topRatedTvSeries => (super.noSuchMethod(
+      Invocation.getter(#topRatedTvSeries),
       returnValue: _FakeGetTopRatedTvSeries_2()) as _i4.GetTopRatedTvSeries);
   @override
-  List<_i6.TvSeries> get nowPlayingTvSeriess =>
-      (super.noSuchMethod(Invocation.getter(#nowPlayingTvSeriess),
-          returnValue: <_i6.TvSeries>[]) as List<_i6.TvSeries>);
+  _i5.TvSeriesListState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeTvSeriesListState_3()) as _i5.TvSeriesListState);
   @override
-  _i7.RequestState get nowPlayingState =>
-      (super.noSuchMethod(Invocation.getter(#nowPlayingState),
-          returnValue: _i7.RequestState.empty) as _i7.RequestState);
+  _i6.Stream<_i5.TvSeriesListState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i5.TvSeriesListState>.empty())
+          as _i6.Stream<_i5.TvSeriesListState>);
   @override
-  List<_i6.TvSeries> get popularTvSeriess =>
-      (super.noSuchMethod(Invocation.getter(#popularTvSeriess),
-          returnValue: <_i6.TvSeries>[]) as List<_i6.TvSeries>);
-  @override
-  _i7.RequestState get popularTvSeriessState =>
-      (super.noSuchMethod(Invocation.getter(#popularTvSeriessState),
-          returnValue: _i7.RequestState.empty) as _i7.RequestState);
-  @override
-  List<_i6.TvSeries> get topRatedTvSeries =>
-      (super.noSuchMethod(Invocation.getter(#topRatedTvSeries),
-          returnValue: <_i6.TvSeries>[]) as List<_i6.TvSeries>);
-  @override
-  _i7.RequestState get topTvRatedSeriesState =>
-      (super.noSuchMethod(Invocation.getter(#topTvRatedSeriesState),
-          returnValue: _i7.RequestState.empty) as _i7.RequestState);
-  @override
-  String get message =>
-      (super.noSuchMethod(Invocation.getter(#message), returnValue: '')
-          as String);
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
           as bool);
   @override
-  _i8.Future<void> fetchNowPlayingTvSeries() =>
-      (super.noSuchMethod(Invocation.method(#fetchNowPlayingTvSeries, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
-  @override
-  _i8.Future<void> fetchPopularTvSeriess() =>
-      (super.noSuchMethod(Invocation.method(#fetchPopularTvSeriess, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
-  @override
-  _i8.Future<void> fetchTopRatedTvSeries() =>
-      (super.noSuchMethod(Invocation.method(#fetchTopRatedTvSeries, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i8.Future<void>);
-  @override
-  void addListener(_i9.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+  void fetchNowPlayingTv() =>
+      super.noSuchMethod(Invocation.method(#fetchNowPlayingTv, []),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i9.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+  void fetchPopularTv() =>
+      super.noSuchMethod(Invocation.method(#fetchPopularTv, []),
           returnValueForMissingStub: null);
   @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
-  @override
-  void notifyListeners() =>
-      super.noSuchMethod(Invocation.method(#notifyListeners, []),
+  void fetchTopRatedTv() =>
+      super.noSuchMethod(Invocation.method(#fetchTopRatedTv, []),
           returnValueForMissingStub: null);
+  @override
+  _i6.StreamSubscription<_i5.TvSeriesListState> listen(
+          void Function(_i5.TvSeriesListState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription_4<_i5.TvSeriesListState>())
+          as _i6.StreamSubscription<_i5.TvSeriesListState>);
+  @override
+  void emit(_i5.TvSeriesListState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i7.Change<_i5.TvSeriesListState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i6.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
   @override
   String toString() => super.toString();
 }

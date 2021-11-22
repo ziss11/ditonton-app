@@ -14,17 +14,11 @@ part 'movie_detail_state.dart';
 class MovieDetailCubit extends Cubit<MovieDetailState> {
   final GetMovieDetail getMovieDetail;
   final GetMovieRecommendations getMovieRecommendations;
-  final GetWatchListStatus getWatchListStatus;
-  final SaveWatchlist saveWatchlist;
-  final RemoveWatchlist removeWatchlist;
 
-  MovieDetailCubit(
-    this.getMovieDetail,
-    this.getMovieRecommendations,
-    this.getWatchListStatus,
-    this.removeWatchlist,
-    this.saveWatchlist,
-  ) : super(MovieDetailInitial());
+  MovieDetailCubit({
+    required this.getMovieDetail,
+    required this.getMovieRecommendations,
+  }) : super(MovieDetailInitial());
 
   void fetchMovieDetail(int id) async {
     emit(MovieDetailLoading());
@@ -46,38 +40,5 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
         },
       );
     });
-  }
-
-  void loadWatchlistStatus(int id) async {
-    final result = await getWatchListStatus.execute(id);
-    emit(WatchlistStatus(result));
-  }
-
-  void addWatchlist(Movie movie) async {
-    final result = await saveWatchlist.execute(movie);
-    await result.fold(
-      (failure) async {
-        emit(WatchlistMessage(failure.message));
-      },
-      (message) async {
-        emit(WatchlistMessage(message));
-      },
-    );
-
-    loadWatchlistStatus(movie.id);
-  }
-
-  void deleteWatchlist(int id) async {
-    final result = await removeWatchlist.execute(id);
-    await result.fold(
-      (failure) async {
-        emit(WatchlistMessage(failure.message));
-      },
-      (message) async {
-        emit(WatchlistMessage(message));
-      },
-    );
-
-    loadWatchlistStatus(id);
   }
 }

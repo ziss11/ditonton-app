@@ -53,12 +53,12 @@ class TvSeriesEpisodeError extends TvSeriesDetailState {
 class TvSeriesRecommendationLoading extends TvSeriesDetailState {}
 
 class TvSeriesRecommendationLoaded extends TvSeriesDetailState {
-  final List<TvSeries> tvSeriesDetail;
+  final List<TvSeries> tvSeriesRecommendation;
 
-  const TvSeriesRecommendationLoaded(this.tvSeriesDetail);
+  const TvSeriesRecommendationLoaded(this.tvSeriesRecommendation);
 
   @override
-  List<Object?> get props => [tvSeriesDetail];
+  List<Object?> get props => [tvSeriesRecommendation];
 }
 
 class TvSeriesRecommendationError extends TvSeriesDetailState {

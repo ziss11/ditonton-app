@@ -47,21 +47,3 @@ class MovieRecommendationError extends MovieDetailState {
   @override
   List<Object?> get props => [message];
 }
-
-class WatchlistStatus extends MovieDetailState {
-  final bool isAddedToWatchlist;
-
-  const WatchlistStatus(this.isAddedToWatchlist);
-
-  @override
-  List<Object?> get props => [isAddedToWatchlist];
-}
-
-class WatchlistMessage extends MovieDetailState {
-  final String watchlistMessage;
-
-  const WatchlistMessage(this.watchlistMessage);
-
-  @override
-  List<Object?> get props => [watchlistMessage];
-}

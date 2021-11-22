@@ -1,7 +1,7 @@
-import 'package:core/core.dart';
-import 'package:core/presentation/provider/movie/top_rated_movies_notifier.dart';
+import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class TopRatedMoviesPage extends StatefulWidget {
@@ -17,9 +17,9 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<TopRatedMoviesNotifier>(context, listen: false)
-            .fetchTopRatedMovies());
+    Future.microtask(
+      () => context.read<MovieListCubit>().fetchTopRatedMovie(),
+    );
   }
 
   @override
@@ -30,24 +30,26 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedMoviesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+        child: BlocBuilder<MovieListCubit, MovieListState>(
+          builder: (context, popular) {
+            if (popular is MovieTopRatedLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
+            } else if (popular is MovieTopRatedLoaded) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return MovieCard(movie: data.movies[index]);
+                  return MovieCard(movie: popular.topRatedMovie[index]);
                 },
-                itemCount: data.movies.length,
+                itemCount: popular.topRatedMovie.length,
               );
-            } else {
+            } else if (popular is MovieTopRatedError) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(popular.message),
               );
+            } else {
+              return const SizedBox();
             }
           },
         ),

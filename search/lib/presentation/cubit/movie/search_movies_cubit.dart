@@ -17,8 +17,14 @@ class SearchMoviesCubit extends Cubit<SearchMoviesState> {
 
     final result = await searchMovies.execute(query);
     result.fold(
-      (failure) => emit(SearchMoviesError(failure.message)),
-      (data) => emit(SearchMoviesLoaded(data)),
+      (failure) async => emit(SearchMoviesError(failure.message)),
+      (data) async {
+        if (data.isNotEmpty) {
+          emit(SearchMoviesLoaded(data));
+        } else {
+          emit(SearchMoviesInitial());
+        }
+      },
     );
   }
 }

@@ -40,36 +40,44 @@ class SearchTvSeriesPage extends StatelessWidget {
             ),
             BlocBuilder<SearchTvSeriesCubit, SearchTvSeriesState>(
               builder: (context, state) {
-                if (state is SearchTvSeriesLoading) {
+                if (state is SearchTvSeriesInitial) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: const Center(
+                      key: Key('empty_message'),
+                      child: Text(
+                        'Search Not Found',
+                      ),
+                    ),
+                  );
+                } else if (state is SearchTvSeriesLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is SearchTvSeriesLoaded) {
-                  if (state.result.isNotEmpty) {
-                    return Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(8),
-                        itemBuilder: (context, index) {
-                          final result = state.result;
-                          return TvCard(tvSeries: result[index]);
-                        },
-                        itemCount: state.result.length,
-                      ),
-                    );
-                  } else {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height / 2,
-                      child: const Center(
-                        child: Text(
-                          'Search Not Found',
-                        ),
-                      ),
-                    );
-                  }
-                } else {
                   return Expanded(
-                    child: Container(),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemBuilder: (context, index) {
+                        return TvCard(
+                          tvSeries: state.result[index],
+                        );
+                      },
+                      itemCount: state.result.length,
+                    ),
                   );
+                } else if (state is SearchTvSeriesError) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: const Center(
+                      key: Key('error_message'),
+                      child: Text(
+                        'Search Not Found',
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
                 }
               },
             ),
