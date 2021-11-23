@@ -1,9 +1,13 @@
 import 'package:about/about_page.dart';
 import 'package:core/core.dart';
 import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_popular_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_top_rated_cubit.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/movie/movie_detail_page.dart';
 import 'package:core/presentation/pages/movie/home_movie_page.dart';
@@ -36,7 +40,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         BlocProvider(
-          create: (_) => di.locator<MovieListCubit>(),
+          create: (_) => di.locator<MovieNowPlayingCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<MoviePopularCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<MovieTopRatedCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<MovieDetailCubit>(),
@@ -48,7 +58,13 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<TvSeriesDetailCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<TvSeriesListCubit>(),
+          create: (_) => di.locator<TvSeriesNowPlayingCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvSeriesPopularCubit>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<TvSeriesTopRatedCubit>(),
         ),
         BlocProvider(
           create: (_) => di.locator<SearchMoviesCubit>(),

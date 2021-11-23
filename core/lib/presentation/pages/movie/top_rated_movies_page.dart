@@ -1,4 +1,5 @@
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => context.read<MovieListCubit>().fetchTopRatedMovie(),
+      () => context.read<MovieTopRatedCubit>().fetchTopRatedMovie(),
     );
   }
 
@@ -30,7 +31,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<MovieListCubit, MovieListState>(
+        child: BlocBuilder<MovieTopRatedCubit, MovieTopRatedState>(
           builder: (context, popular) {
             if (popular is MovieTopRatedLoading) {
               return const Center(

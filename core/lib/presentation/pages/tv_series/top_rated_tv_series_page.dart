@@ -1,4 +1,5 @@
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_top_rated_cubit.dart';
 import 'package:core/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,8 @@ class _TopRatedTvSeriesPageState extends State<TopRatedTvSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<TvSeriesListCubit>().fetchTopRatedTv());
+    Future.microtask(
+        () => context.read<TvSeriesTopRatedCubit>().fetchTopRatedTv());
   }
 
   @override
@@ -29,7 +31,7 @@ class _TopRatedTvSeriesPageState extends State<TopRatedTvSeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<TvSeriesListCubit, TvSeriesListState>(
+        child: BlocBuilder<TvSeriesTopRatedCubit, TvSeriesTopRatedState>(
           builder: (context, data) {
             if (data is TvSeriesTopRatedLoading) {
               return const Center(

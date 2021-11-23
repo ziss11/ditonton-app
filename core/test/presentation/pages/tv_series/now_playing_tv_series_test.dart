@@ -1,4 +1,4 @@
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
 import 'package:core/presentation/pages/tv_series/now_playing_tv_series_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,16 +9,16 @@ import 'package:mockito/mockito.dart';
 import '../../../dummy_data/tv_series/dummy_tv_series_object.dart';
 import 'now_playing_tv_series_test.mocks.dart';
 
-@GenerateMocks([TvSeriesListCubit])
+@GenerateMocks([TvSeriesNowPlayingCubit])
 void main() {
-  late MockTvSeriesListCubit mockCubit;
+  late MockTvSeriesNowPlayingCubit mockCubit;
 
   setUp(() {
-    mockCubit = MockTvSeriesListCubit();
+    mockCubit = MockTvSeriesNowPlayingCubit();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return BlocProvider<TvSeriesListCubit>.value(
+    return BlocProvider<TvSeriesNowPlayingCubit>.value(
       value: mockCubit,
       child: MaterialApp(
         home: body,

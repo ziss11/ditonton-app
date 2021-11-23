@@ -1,10 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
+import 'package:core/domain/entities/tv_series/episode.dart';
+import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:core/domain/usecases/tv_series/get_detail_tv_series.dart';
 import 'package:core/domain/usecases/tv_series/get_recommendation_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -25,8 +26,8 @@ void main() {
 
   setUp(() {
     mockGetRecommendationTvSeries = MockGetRecommendationTvSeries();
-    mockGetTvSeriesEpisode = MockGetTvSeriesEpisode();
     mockGetDetailTvSeries = MockGetDetailTvSeries();
+    mockGetTvSeriesEpisode = MockGetTvSeriesEpisode();
     cubit = TvSeriesDetailCubit(
       detailTvSeries: mockGetDetailTvSeries,
       recommendationTvSeries: mockGetRecommendationTvSeries,
@@ -62,9 +63,7 @@ void main() {
       act: (cubit) => cubit.fetchDetailTv(testTvSeries.id!),
       expect: () => [
         TvSeriesDetailLoading(),
-        const TvSeriesDetailLoaded(testTvSeriesDetail),
-        TvSeriesRecommendationLoading(),
-        TvSeriesRecommendationLoaded(testTvSeriesList),
+        TvSeriesDetailLoaded(testTvSeriesDetail, testTvSeriesList),
       ],
       verify: (cubit) {
         mockGetDetailTvSeries.execute(testTvSeries.id);
@@ -72,13 +71,12 @@ void main() {
       },
     );
   });
-
   group('Get Episode Tv Series', () {
     blocTest<TvSeriesDetailCubit, TvSeriesDetailState>(
       'should get data from the usecase',
       build: () {
         when(mockGetTvSeriesEpisode.execute(1, 1))
-            .thenAnswer((_) async => Right(testEpisodeList));
+            .thenAnswer((_) async => const Right(<Episode>[]));
         return cubit;
       },
       act: (cubit) => cubit.fetchEpisodeTv(1, 1),
@@ -94,8 +92,24 @@ void main() {
       },
       act: (cubit) => cubit.fetchEpisodeTv(1, 1),
       expect: () => [
-        TvSeriesEpisodeLoading(),
-        TvSeriesEpisodeLoaded(testEpisodeList),
+        EpisodeLoading(),
+        EpisodeLoaded(testEpisodeList),
+      ],
+      verify: (cubit) => mockGetTvSeriesEpisode.execute(1, 1),
+    );
+
+    blocTest<TvSeriesDetailCubit, TvSeriesDetailState>(
+      'Should emit [Loading, Initial] when data is gotten successfuly',
+      build: () {
+        when(mockGetTvSeriesEpisode.execute(1, 1))
+            .thenAnswer((_) async => const Right([]));
+
+        return cubit;
+      },
+      act: (cubit) => cubit.fetchEpisodeTv(1, 1),
+      expect: () => [
+        EpisodeLoading(),
+        EpisodeInitial(),
       ],
       verify: (cubit) => mockGetTvSeriesEpisode.execute(1, 1),
     );
@@ -109,8 +123,8 @@ void main() {
       },
       act: (cubit) => cubit.fetchEpisodeTv(1, 1),
       expect: () => [
-        TvSeriesEpisodeLoading(),
-        const TvSeriesEpisodeError('Server Failure'),
+        EpisodeLoading(),
+        const EpisodeError('Server Failure'),
       ],
       verify: (cubit) => mockGetTvSeriesEpisode.execute(1, 1),
     );

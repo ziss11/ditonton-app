@@ -1,4 +1,4 @@
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
 import 'package:core/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +17,7 @@ class _NowPlayingTvPageState extends State<NowPlayingTvPage> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => context.read<TvSeriesListCubit>().fetchNowPlayingTv(),
+      () => context.read<TvSeriesNowPlayingCubit>().fetchNowPlayingTv(),
     );
   }
 
@@ -29,7 +29,7 @@ class _NowPlayingTvPageState extends State<NowPlayingTvPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<TvSeriesListCubit, TvSeriesListState>(
+        child: BlocBuilder<TvSeriesNowPlayingCubit, TvSeriesNowPlayingState>(
           builder: (context, data) {
             if (data is TvSeriesNowPlayingLoading) {
               return const Center(

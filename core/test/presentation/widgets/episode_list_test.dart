@@ -1,5 +1,3 @@
-import 'package:core/core.dart';
-import 'package:core/domain/entities/tv_series/episode.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
 import 'package:core/presentation/widgets/episode_card_list.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/tv_series/dummy_tv_series_object.dart';
-import 'episode_list_test.mocks.dart';
+import '../pages/tv_series/tv_series_detail_page_test.mocks.dart';
 
 @GenerateMocks([TvSeriesDetailCubit])
 void main() {
@@ -29,11 +27,41 @@ void main() {
   }
 
   testWidgets(
-    "should display episode list when data is loaded",
+    "Page should display message when data is empty",
     (WidgetTester tester) async {
-      when(mockCubit.stream).thenAnswer(
-          (_) => Stream.value(TvSeriesEpisodeLoaded(testEpisodeList)));
-      when(mockCubit.state).thenReturn(TvSeriesEpisodeLoaded(testEpisodeList));
+      when(mockCubit.stream).thenAnswer((_) => Stream.value(EpisodeInitial()));
+      when(mockCubit.state).thenReturn(EpisodeInitial());
+
+      final messageFinder = find.byKey(const Key('empty_message'));
+
+      await tester.pumpWidget(
+          _makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
+
+      expect(messageFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "Page should display progress bar when loading",
+    (WidgetTester tester) async {
+      when(mockCubit.stream).thenAnswer((_) => Stream.value(EpisodeLoading()));
+      when(mockCubit.state).thenReturn(EpisodeLoading());
+
+      final progressBarFinder = find.byType(CircularProgressIndicator);
+
+      await tester.pumpWidget(
+          _makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
+
+      expect(progressBarFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    "Page should display episode list when data is loaded",
+    (WidgetTester tester) async {
+      when(mockCubit.stream)
+          .thenAnswer((_) => Stream.value(EpisodeLoaded(testEpisodeList)));
+      when(mockCubit.state).thenReturn(EpisodeLoaded(testEpisodeList));
 
       final listFinder = find.byKey(const Key('episode_list'));
 

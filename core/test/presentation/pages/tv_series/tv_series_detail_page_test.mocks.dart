@@ -4,15 +4,21 @@
 
 import 'dart:async' as _i6;
 
-import 'package:bloc/bloc.dart' as _i7;
+import 'package:bloc/bloc.dart' as _i12;
+import 'package:core/domain/entities/movie/movie.dart' as _i13;
+import 'package:core/domain/usecases/get_watchlist.dart' as _i7;
+import 'package:core/domain/usecases/get_watchlist_status.dart' as _i8;
+import 'package:core/domain/usecases/remove_watchlist.dart' as _i10;
+import 'package:core/domain/usecases/save_watchlist.dart' as _i9;
 import 'package:core/domain/usecases/tv_series/get_detail_tv_series.dart'
     as _i2;
 import 'package:core/domain/usecases/tv_series/get_recommendation_tv_series.dart'
-    as _i4;
-import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart'
     as _i3;
+import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart'
+    as _i4;
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart'
     as _i5;
+import 'package:core/presentation/cubit/watchlist_cubit.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -27,17 +33,28 @@ import 'package:mockito/mockito.dart' as _i1;
 class _FakeGetDetailTvSeries_0 extends _i1.Fake
     implements _i2.GetDetailTvSeries {}
 
-class _FakeGetTvSeriesEpisode_1 extends _i1.Fake
-    implements _i3.GetTvSeriesEpisode {}
+class _FakeGetRecommendationTvSeries_1 extends _i1.Fake
+    implements _i3.GetRecommendationTvSeries {}
 
-class _FakeGetRecommendationTvSeries_2 extends _i1.Fake
-    implements _i4.GetRecommendationTvSeries {}
+class _FakeGetTvSeriesEpisode_2 extends _i1.Fake
+    implements _i4.GetTvSeriesEpisode {}
 
 class _FakeTvSeriesDetailState_3 extends _i1.Fake
     implements _i5.TvSeriesDetailState {}
 
 class _FakeStreamSubscription_4<T> extends _i1.Fake
     implements _i6.StreamSubscription<T> {}
+
+class _FakeGetWatchlist_5 extends _i1.Fake implements _i7.GetWatchlist {}
+
+class _FakeGetWatchListStatus_6 extends _i1.Fake
+    implements _i8.GetWatchListStatus {}
+
+class _FakeSaveWatchlist_7 extends _i1.Fake implements _i9.SaveWatchlist {}
+
+class _FakeRemoveWatchlist_8 extends _i1.Fake implements _i10.RemoveWatchlist {}
+
+class _FakeWatchlistState_9 extends _i1.Fake implements _i11.WatchlistState {}
 
 /// A class which mocks [TvSeriesDetailCubit].
 ///
@@ -53,14 +70,14 @@ class MockTvSeriesDetailCubit extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#detailTvSeries),
           returnValue: _FakeGetDetailTvSeries_0()) as _i2.GetDetailTvSeries);
   @override
-  _i3.GetTvSeriesEpisode get tvSeriesEpisode =>
-      (super.noSuchMethod(Invocation.getter(#tvSeriesEpisode),
-          returnValue: _FakeGetTvSeriesEpisode_1()) as _i3.GetTvSeriesEpisode);
-  @override
-  _i4.GetRecommendationTvSeries get recommendationTvSeries =>
+  _i3.GetRecommendationTvSeries get recommendationTvSeries =>
       (super.noSuchMethod(Invocation.getter(#recommendationTvSeries),
-              returnValue: _FakeGetRecommendationTvSeries_2())
-          as _i4.GetRecommendationTvSeries);
+              returnValue: _FakeGetRecommendationTvSeries_1())
+          as _i3.GetRecommendationTvSeries);
+  @override
+  _i4.GetTvSeriesEpisode get tvSeriesEpisode =>
+      (super.noSuchMethod(Invocation.getter(#tvSeriesEpisode),
+          returnValue: _FakeGetTvSeriesEpisode_2()) as _i4.GetTvSeriesEpisode);
   @override
   _i5.TvSeriesDetailState get state => (super.noSuchMethod(
       Invocation.getter(#state),
@@ -103,7 +120,100 @@ class MockTvSeriesDetailCubit extends _i1.Mock
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
-  void onChange(_i7.Change<_i5.TvSeriesDetailState>? change) =>
+  void onChange(_i12.Change<_i5.TvSeriesDetailState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  _i6.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [WatchlistCubit].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockWatchlistCubit extends _i1.Mock implements _i11.WatchlistCubit {
+  MockWatchlistCubit() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i7.GetWatchlist get watchlist =>
+      (super.noSuchMethod(Invocation.getter(#watchlist),
+          returnValue: _FakeGetWatchlist_5()) as _i7.GetWatchlist);
+  @override
+  _i8.GetWatchListStatus get getWatchListStatus =>
+      (super.noSuchMethod(Invocation.getter(#getWatchListStatus),
+          returnValue: _FakeGetWatchListStatus_6()) as _i8.GetWatchListStatus);
+  @override
+  _i9.SaveWatchlist get saveWatchlist =>
+      (super.noSuchMethod(Invocation.getter(#saveWatchlist),
+          returnValue: _FakeSaveWatchlist_7()) as _i9.SaveWatchlist);
+  @override
+  _i10.RemoveWatchlist get removeWatchlist =>
+      (super.noSuchMethod(Invocation.getter(#removeWatchlist),
+          returnValue: _FakeRemoveWatchlist_8()) as _i10.RemoveWatchlist);
+  @override
+  _i11.WatchlistState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeWatchlistState_9()) as _i11.WatchlistState);
+  @override
+  _i6.Stream<_i11.WatchlistState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i11.WatchlistState>.empty())
+          as _i6.Stream<_i11.WatchlistState>);
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
+          as bool);
+  @override
+  void loadWatchlistStatus(int? id) =>
+      super.noSuchMethod(Invocation.method(#loadWatchlistStatus, [id]),
+          returnValueForMissingStub: null);
+  @override
+  void fetchWatchlist() =>
+      super.noSuchMethod(Invocation.method(#fetchWatchlist, []),
+          returnValueForMissingStub: null);
+  @override
+  void addWatchlist(_i13.Movie? movie) =>
+      super.noSuchMethod(Invocation.method(#addWatchlist, [movie]),
+          returnValueForMissingStub: null);
+  @override
+  void deleteWatchlist(int? id) =>
+      super.noSuchMethod(Invocation.method(#deleteWatchlist, [id]),
+          returnValueForMissingStub: null);
+  @override
+  _i6.StreamSubscription<_i11.WatchlistState> listen(
+          void Function(_i11.WatchlistState)? onData,
+          {Function? onError,
+          void Function()? onDone,
+          bool? cancelOnError}) =>
+      (super.noSuchMethod(
+              Invocation.method(#listen, [
+                onData
+              ], {
+                #onError: onError,
+                #onDone: onDone,
+                #cancelOnError: cancelOnError
+              }),
+              returnValue: _FakeStreamSubscription_4<_i11.WatchlistState>())
+          as _i6.StreamSubscription<_i11.WatchlistState>);
+  @override
+  void emit(_i11.WatchlistState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
+  @override
+  void onChange(_i12.Change<_i11.WatchlistState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override

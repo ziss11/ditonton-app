@@ -1,4 +1,4 @@
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
 import 'package:core/presentation/pages/movie/popular_movies_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,16 +9,16 @@ import 'package:mockito/mockito.dart';
 import '../../../dummy_data/movie/dummy_movie_objects.dart';
 import 'popular_movies_page_test.mocks.dart';
 
-@GenerateMocks([MovieListCubit])
+@GenerateMocks([MoviePopularCubit])
 void main() {
-  late MockMovieListCubit mockCubit;
+  late MockMoviePopularCubit mockCubit;
 
   setUp(() {
-    mockCubit = MockMovieListCubit();
+    mockCubit = MockMoviePopularCubit();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return BlocProvider<MovieListCubit>.value(
+    return BlocProvider<MoviePopularCubit>.value(
       value: mockCubit,
       child: MaterialApp(
         home: body,

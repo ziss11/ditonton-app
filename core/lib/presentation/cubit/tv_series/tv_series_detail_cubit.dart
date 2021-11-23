@@ -12,8 +12,8 @@ part 'tv_series_detail_state.dart';
 
 class TvSeriesDetailCubit extends Cubit<TvSeriesDetailState> {
   final GetDetailTvSeries detailTvSeries;
-  final GetTvSeriesEpisode tvSeriesEpisode;
   final GetRecommendationTvSeries recommendationTvSeries;
+  final GetTvSeriesEpisode tvSeriesEpisode;
 
   TvSeriesDetailCubit({
     required this.detailTvSeries,
@@ -32,15 +32,14 @@ class TvSeriesDetailCubit extends Cubit<TvSeriesDetailState> {
         emit(TvSeriesDetailError(failure.message));
       },
       (detail) async {
-        emit(TvSeriesDetailLoaded(detail));
-        emit(TvSeriesRecommendationLoading());
+        emit(TvSeriesDetailLoading());
 
         recommendation.fold(
           (failure) async {
-            emit(TvSeriesRecommendationError(failure.message));
+            emit(TvSeriesDetailError(failure.message));
           },
-          (data) async {
-            emit(TvSeriesRecommendationLoaded(data));
+          (recomendation) async {
+            emit(TvSeriesDetailLoaded(detail, recomendation));
           },
         );
       },
@@ -48,16 +47,21 @@ class TvSeriesDetailCubit extends Cubit<TvSeriesDetailState> {
   }
 
   void fetchEpisodeTv(int id, int season) async {
-    emit(TvSeriesEpisodeLoading());
+    emit(EpisodeLoading());
 
     final episode = await tvSeriesEpisode.execute(id, season);
-
     episode.fold(
       (failure) async {
-        emit(TvSeriesEpisodeError(failure.message));
+        emit(EpisodeError(failure.message));
       },
       (data) async {
-        emit(TvSeriesEpisodeLoaded(data));
+        if (data.isNotEmpty) {
+          emit(EpisodeLoaded(data));
+        } else {
+          if (data.isEmpty) {
+            emit(EpisodeInitial());
+          }
+        }
       },
     );
   }

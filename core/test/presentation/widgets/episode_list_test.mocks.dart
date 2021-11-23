@@ -8,9 +8,9 @@ import 'package:bloc/bloc.dart' as _i7;
 import 'package:core/domain/usecases/tv_series/get_detail_tv_series.dart'
     as _i2;
 import 'package:core/domain/usecases/tv_series/get_recommendation_tv_series.dart'
-    as _i4;
-import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart'
     as _i3;
+import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart'
+    as _i4;
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart'
     as _i5;
 import 'package:mockito/mockito.dart' as _i1;
@@ -27,11 +27,11 @@ import 'package:mockito/mockito.dart' as _i1;
 class _FakeGetDetailTvSeries_0 extends _i1.Fake
     implements _i2.GetDetailTvSeries {}
 
-class _FakeGetTvSeriesEpisode_1 extends _i1.Fake
-    implements _i3.GetTvSeriesEpisode {}
+class _FakeGetRecommendationTvSeries_1 extends _i1.Fake
+    implements _i3.GetRecommendationTvSeries {}
 
-class _FakeGetRecommendationTvSeries_2 extends _i1.Fake
-    implements _i4.GetRecommendationTvSeries {}
+class _FakeGetTvSeriesEpisode_2 extends _i1.Fake
+    implements _i4.GetTvSeriesEpisode {}
 
 class _FakeTvSeriesDetailState_3 extends _i1.Fake
     implements _i5.TvSeriesDetailState {}
@@ -53,14 +53,14 @@ class MockTvSeriesDetailCubit extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#detailTvSeries),
           returnValue: _FakeGetDetailTvSeries_0()) as _i2.GetDetailTvSeries);
   @override
-  _i3.GetTvSeriesEpisode get tvSeriesEpisode =>
-      (super.noSuchMethod(Invocation.getter(#tvSeriesEpisode),
-          returnValue: _FakeGetTvSeriesEpisode_1()) as _i3.GetTvSeriesEpisode);
-  @override
-  _i4.GetRecommendationTvSeries get recommendationTvSeries =>
+  _i3.GetRecommendationTvSeries get recommendationTvSeries =>
       (super.noSuchMethod(Invocation.getter(#recommendationTvSeries),
-              returnValue: _FakeGetRecommendationTvSeries_2())
-          as _i4.GetRecommendationTvSeries);
+              returnValue: _FakeGetRecommendationTvSeries_1())
+          as _i3.GetRecommendationTvSeries);
+  @override
+  _i4.GetTvSeriesEpisode get tvSeriesEpisode =>
+      (super.noSuchMethod(Invocation.getter(#tvSeriesEpisode),
+          returnValue: _FakeGetTvSeriesEpisode_2()) as _i4.GetTvSeriesEpisode);
   @override
   _i5.TvSeriesDetailState get state => (super.noSuchMethod(
       Invocation.getter(#state),

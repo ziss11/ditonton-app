@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:core/domain/entities/tv_series/tv_series.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_popular_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_top_rated_cubit.dart';
 import 'package:core/presentation/pages/movie/home_movie_page.dart';
 import 'package:core/presentation/pages/tv_series/popular_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/top_rated_tv_series_page.dart';
@@ -27,12 +29,11 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => context.read<TvSeriesListCubit>()
-        ..fetchNowPlayingTv()
-        ..fetchPopularTv()
-        ..fetchTopRatedTv(),
-    );
+    Future.microtask(() {
+      context.read<TvSeriesNowPlayingCubit>().fetchNowPlayingTv();
+      context.read<TvSeriesPopularCubit>().fetchPopularTv();
+      context.read<TvSeriesTopRatedCubit>().fetchTopRatedTv();
+    });
   }
 
   @override
@@ -112,9 +113,11 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                   NowPlayingTvPage.routeName,
                 ),
               ),
-              BlocBuilder(builder: (context, nowPlaying) {
+              BlocBuilder<TvSeriesNowPlayingCubit, TvSeriesNowPlayingState>(
+                  builder: (context, nowPlaying) {
                 if (nowPlaying is TvSeriesNowPlayingLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (nowPlaying is TvSeriesNowPlayingLoaded) {
@@ -128,9 +131,11 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, PopularTvSeriesPage.routeName),
               ),
-              BlocBuilder(builder: (context, popular) {
+              BlocBuilder<TvSeriesPopularCubit, TvSeriesPopularState>(
+                  builder: (context, popular) {
                 if (popular is TvSeriesPopularLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (popular is TvSeriesPopularLoaded) {
@@ -144,9 +149,11 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                 onTap: () => Navigator.pushNamed(
                     context, TopRatedTvSeriesPage.routeName),
               ),
-              BlocBuilder(builder: (context, top) {
+              BlocBuilder<TvSeriesTopRatedCubit, TvSeriesTopRatedState>(
+                  builder: (context, top) {
                 if (top is TvSeriesTopRatedLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (top is TvSeriesTopRatedLoaded) {

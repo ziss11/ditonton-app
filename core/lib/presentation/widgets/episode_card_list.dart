@@ -24,10 +24,9 @@ class _EpisodeCardListState extends State<EpisodeCardList> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => context.read<TvSeriesDetailCubit>().fetchEpisodeTv(
-            widget.id,
-            widget.season,
-          ),
+      () => context
+          .read<TvSeriesDetailCubit>()
+          .fetchEpisodeTv(widget.id, widget.season),
     );
   }
 
@@ -35,17 +34,17 @@ class _EpisodeCardListState extends State<EpisodeCardList> {
   Widget build(BuildContext context) {
     return BlocBuilder<TvSeriesDetailCubit, TvSeriesDetailState>(
       builder: (context, eps) {
-        if (eps is TvSeriesEpisodeLoading) {
+        if (eps is EpisodeLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (eps is TvSeriesEpisodeLoaded) {
+        } else if (eps is EpisodeLoaded) {
           return ListView.builder(
             key: const Key('episode_list'),
             scrollDirection: Axis.horizontal,
-            itemCount: eps.tvSeriesEpisode.length,
+            itemCount: eps.episode.length,
             itemBuilder: (context, index) {
-              final data = eps.tvSeriesEpisode[index];
+              final data = eps.episode[index];
               return Container(
                 width: 350,
                 margin: const EdgeInsets.only(left: 8),
@@ -115,11 +114,13 @@ class _EpisodeCardListState extends State<EpisodeCardList> {
               );
             },
           );
-        } else {
+        } else if (eps is EpisodeInitial) {
           return const Center(
-            key: Key('error_message'),
+            key: Key('empty_message'),
             child: Text('Episode tidak ditemukan'),
           );
+        } else {
+          return const SizedBox();
         }
       },
     );

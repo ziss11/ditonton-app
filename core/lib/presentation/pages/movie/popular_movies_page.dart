@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => context.read<MovieListCubit>().fetchPopularMovie(),
+      () => context.read<MoviePopularCubit>().fetchPopularMovie(),
     );
   }
 
@@ -31,7 +32,7 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: BlocBuilder<MovieListCubit, MovieListState>(
+        child: BlocBuilder<MoviePopularCubit, MoviePopularState>(
           builder: (context, popular) {
             if (popular is MoviePopularLoading) {
               return const Center(

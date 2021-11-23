@@ -22,9 +22,13 @@ import 'package:core/domain/usecases/tv_series/get_recommendation_tv_series.dart
 import 'package:core/domain/usecases/tv_series/get_top_rated_tv_series.dart';
 import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart';
 import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_list_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_popular_cubit.dart';
+import 'package:core/presentation/cubit/tv_series/tv_series_top_rated_cubit.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
@@ -35,9 +39,17 @@ final locator = GetIt.instance;
 void init() {
   // cubit
   locator.registerFactory(
-    () => MovieListCubit(
+    () => MovieNowPlayingCubit(
       nowPlayingMovies: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => MoviePopularCubit(
       popularMovies: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => MovieTopRatedCubit(
       topRatedMovies: locator(),
     ),
   );
@@ -60,10 +72,18 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => TvSeriesListCubit(
+    () => TvSeriesNowPlayingCubit(
       nowPlayingTvSeries: locator(),
-      popularTvSeries: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvSeriesTopRatedCubit(
       topRatedTvSeries: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvSeriesPopularCubit(
+      popularTvSeries: locator(),
     ),
   );
   locator.registerFactory(

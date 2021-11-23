@@ -214,7 +214,7 @@ void main() {
       'should execute remove watchlist when function called',
       build: () {
         when(mockRemoveWatchlist.execute(testMovieDetail.id))
-            .thenAnswer((_) async => const Right('Remove from Watchlist'));
+            .thenAnswer((_) async => const Right('Removed from Watchlist'));
         when(mockGetWatchListStatus.execute(testMovieDetail.id))
             .thenAnswer((_) async => false);
 
@@ -230,7 +230,7 @@ void main() {
         'should update watchlist message when remove watchlist success',
         build: () {
           when(mockRemoveWatchlist.execute(testMovieDetail.id))
-              .thenAnswer((_) async => const Right('Remove from Watchlist'));
+              .thenAnswer((_) async => const Right('Removed from Watchlist'));
           when(mockGetWatchListStatus.execute(testMovieDetail.id))
               .thenAnswer((_) async => false);
 
@@ -238,7 +238,7 @@ void main() {
         },
         act: (cubit) => cubit.deleteWatchlist(testMovieDetail.id),
         expect: () => [
-          const WatchlistMessage('Remove from Watchlist'),
+          const WatchlistMessage('Removed from Watchlist'),
           const WatchlistStatus(false),
         ],
         verify: (cubit) {
@@ -248,7 +248,7 @@ void main() {
       );
 
       blocTest<WatchlistCubit, WatchlistState>(
-        'should update watchlist message when remove from watchlist failed',
+        'should update watchlist message when Removed from Watchlist failed',
         build: () {
           when(mockRemoveWatchlist.execute(testMovieDetail.id))
               .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
@@ -281,7 +281,7 @@ void main() {
         'should update watchlist message when remove watchlist success',
         build: () {
           when(mockRemoveWatchlist.execute(tTvSeries.id))
-              .thenAnswer((_) async => const Right('Remove from Watchlist'));
+              .thenAnswer((_) async => const Right('Removed from Watchlist'));
           when(mockGetWatchListStatus.execute(tTvSeries.id))
               .thenAnswer((_) async => false);
 
@@ -289,7 +289,7 @@ void main() {
         },
         act: (cubit) => cubit.deleteWatchlist(tTvSeries.id),
         expect: () => [
-          const WatchlistMessage('Remove from Watchlist'),
+          const WatchlistMessage('Removed from Watchlist'),
           const WatchlistStatus(false),
         ],
         verify: (cubit) {
@@ -299,7 +299,7 @@ void main() {
       );
 
       blocTest<WatchlistCubit, WatchlistState>(
-        'should update watchlist message when remove from watchlist failed',
+        'should update watchlist message when Removed from Watchlist failed',
         build: () {
           when(mockRemoveWatchlist.execute(tTvSeries.id))
               .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));

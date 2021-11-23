@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/domain/entities/movie/movie.dart';
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
+import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart';
 import 'package:core/presentation/pages/movie/popular_movies_page.dart';
 import 'package:core/presentation/pages/movie/top_rated_movies_page.dart';
 import 'package:core/presentation/pages/watchlist_page.dart';
@@ -29,10 +31,9 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<MovieListCubit>()
-        ..fetchNowPlayingMovie()
-        ..fetchPopularMovie()
-        ..fetchTopRatedMovie();
+      context.read<MovieNowPlayingCubit>().fetchNowPlayingMovie();
+      context.read<MoviePopularCubit>().fetchPopularMovie();
+      context.read<MovieTopRatedCubit>().fetchTopRatedMovie();
     });
   }
 
@@ -101,10 +102,11 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text('Now Playing'),
-              BlocBuilder<MovieListCubit, MovieListState>(
+              BlocBuilder<MovieNowPlayingCubit, MovieNowPlayingState>(
                   builder: (context, nowPlaying) {
                 if (nowPlaying is MovieNowPlayingLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (nowPlaying is MovieNowPlayingLoaded) {
@@ -120,10 +122,11 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 onTap: () =>
                     Navigator.pushNamed(context, PopularMoviesPage.routeName),
               ),
-              BlocBuilder<MovieListCubit, MovieListState>(
+              BlocBuilder<MoviePopularCubit, MoviePopularState>(
                   builder: (context, popular) {
                 if (popular is MoviePopularLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (popular is MoviePopularLoaded) {
@@ -139,10 +142,11 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedMoviesPage.routeName),
               ),
-              BlocBuilder<MovieListCubit, MovieListState>(
+              BlocBuilder<MovieTopRatedCubit, MovieTopRatedState>(
                   builder: (context, top) {
                 if (top is MovieTopRatedLoading) {
                   return const Center(
+                    key: Key('center_progressbar'),
                     child: CircularProgressIndicator(),
                   );
                 } else if (top is MovieTopRatedLoaded) {

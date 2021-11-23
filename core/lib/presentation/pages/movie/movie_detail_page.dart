@@ -75,7 +75,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     ),
                   );
                 } else if (detail is MovieDetailError) {
-                  return Text(detail.message);
+                  return Text(
+                    detail.message,
+                  );
                 } else {
                   return const SizedBox();
                 }
@@ -147,7 +149,6 @@ class DetailContent extends StatelessWidget {
                                   title: movie.title,
                                   type: movie.type,
                                 );
-
                                 if (!isAddedWatchlist) {
                                   context.read<WatchlistCubit>()
                                     ..addWatchlist(data)
@@ -203,19 +204,16 @@ class DetailContent extends StatelessWidget {
                             ),
                             BlocBuilder<MovieDetailCubit, MovieDetailState>(
                               builder: (context, recommendation) {
-                                if (recommendation
-                                    is MovieRecommendationLoading) {
+                                if (recommendation is MovieDetailLoading) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (recommendation
-                                    is MovieRecommendationError) {
+                                } else if (recommendation is MovieDetailError) {
                                   return Text(
                                     recommendation.message,
-                                    key: const Key('recommended_error'),
                                   );
                                 } else if (recommendation
-                                    is MovieRecommendationLoaded) {
+                                    is MovieDetailLoaded) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(
@@ -223,7 +221,7 @@ class DetailContent extends StatelessWidget {
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
                                         final movie = recommendation
-                                            .recommendedMovie[index];
+                                            .recomendationMovie[index];
                                         return Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
@@ -246,7 +244,7 @@ class DetailContent extends StatelessWidget {
                                         );
                                       },
                                       itemCount: recommendation
-                                          .recommendedMovie.length,
+                                          .recomendationMovie.length,
                                     ),
                                   );
                                 } else {

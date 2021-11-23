@@ -1,4 +1,4 @@
-import 'package:bloc_test/bloc_test.dart';
+import 'package:core/domain/entities/movie/movie.dart';
 import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/movie/movie_detail_page.dart';
@@ -37,7 +37,7 @@ void main() {
   }
 
   testWidgets(
-    'should display proggress bar when movie loading',
+    'should display proggress bar when movie and recommendation loading',
     (WidgetTester tester) async {
       when(mockMovieDetailCubit.stream)
           .thenAnswer((_) => Stream.value(MovieDetailLoading()));
@@ -55,12 +55,31 @@ void main() {
   );
 
   testWidgets(
+    'should display error message when get data is error',
+    (WidgetTester tester) async {
+      when(mockMovieDetailCubit.stream).thenAnswer(
+          (_) => Stream.value(const MovieDetailError('Error Message')));
+      when(mockMovieDetailCubit.state)
+          .thenReturn(const MovieDetailError('Error Message'));
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+      when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+
+      final errorFinder = find.text('Error Message');
+
+      await tester
+          .pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+      expect(errorFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
       'Watchlist button should display add icon when movie not added to watchlist',
       (WidgetTester tester) async {
-    when(mockMovieDetailCubit.stream).thenAnswer(
-        (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
     when(mockMovieDetailCubit.state)
-        .thenReturn(const MovieDetailLoaded(testMovieDetail));
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
     when(mockWatchlistCubit.stream)
         .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
     when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
@@ -75,10 +94,10 @@ void main() {
   testWidgets(
       'Watchlist button should dispay check icon when movie is added to watchlist',
       (WidgetTester tester) async {
-    when(mockMovieDetailCubit.stream).thenAnswer(
-        (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
     when(mockMovieDetailCubit.state)
-        .thenReturn(const MovieDetailLoaded(testMovieDetail));
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
     when(mockWatchlistCubit.stream)
         .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
     when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
@@ -93,177 +112,86 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
     when(mockMovieDetailCubit.state)
-        .thenReturn(const MovieDetailLoaded(testMovieDetail));
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
     when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
-    whenListen(
-      mockWatchlistCubit,
-      Stream.fromIterable([
-        MovieDetailLoading(),
-        const WatchlistMessage('Added to Watchlist'),
-      ]),
-      initialState: MovieDetailInitial(),
-    );
+    when(mockWatchlistCubit.stream).thenAnswer(
+        (_) => Stream.value(const WatchlistMessage('Added to Watchlist')));
+    when(mockWatchlistCubit.state)
+        .thenReturn(const WatchlistMessage('Added to Watchlist'));
+
     await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
     await tester.pump();
-    await tester.pump();
+
     expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Added to Watchlist'), findsOneWidget);
   });
 
-  // testWidgets(
-  //     'Watchlist button should display Snackbar when removed to watchlist',
-  //     (WidgetTester tester) async {
-  //   when(mockNotifier.movieState).thenReturn(RequestState.loaded);
-  //   when(mockNotifier.movie).thenReturn(testMovieDetail);
-  //   when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-  //   when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
-  //   when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockNotifier.watchlistMessage).thenReturn('Removed from Watchlist');
+  testWidgets(
+      'Watchlist button should display Snackbar when removed to watchlist',
+      (WidgetTester tester) async {
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
+    when(mockMovieDetailCubit.state)
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
+    when(mockWatchlistCubit.stream).thenAnswer(
+        (_) => Stream.value(const WatchlistMessage('Removed from Watchlist')));
+    when(mockWatchlistCubit.state)
+        .thenReturn(const WatchlistMessage('Removed from Watchlist'));
 
-  //   final watchlistButton = find.byType(ElevatedButton);
+    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pump();
 
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(find.byIcon(Icons.check), findsOneWidget);
-
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
-
-  //   expect(find.byType(SnackBar), findsOneWidget);
-  //   expect(find.text('Removed from Watchlist'), findsOneWidget);
-  // });
-
-  // testWidgets(
-  //     'Watchlist button should display AlertDialog when add to watchlist failed',
-  //     (WidgetTester tester) async {
-  //   when(mockWatchlistCubit.stream)
-  //       .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
-  //   when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
-  //   when(mockWatchlistCubit.stream)
-  //       .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
-  //   when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
-  //   when(mockMovieDetailCubit.stream).thenAnswer(
-  //       (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
-  //   when(mockMovieDetailCubit.state)
-  //       .thenReturn(const MovieDetailLoaded(testMovieDetail));
-
-  //   final watchlistButton = find.byType(ElevatedButton);
-
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(find.byIcon(Icons.add), findsOneWidget);
-
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
-
-  //   expect(find.byType(AlertDialog), findsOneWidget);
-  //   expect(find.text('Failed'), findsOneWidget);
-  // });
-
-  // testWidgets(
-  //     'Watchlist button should display AlertDialog when remove from watchlist failed',
-  //     (WidgetTester tester) async {
-  //   when(mockNotifier.movieState).thenReturn(RequestState.loaded);
-  //   when(mockNotifier.movie).thenReturn(testMovieDetail);
-  //   when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-  //   when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
-  //   when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockNotifier.watchlistMessage).thenReturn('Failed');
-
-  //   final watchlistButton = find.byType(ElevatedButton);
-
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(find.byIcon(Icons.check), findsOneWidget);
-
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
-
-  //   expect(find.byType(AlertDialog), findsOneWidget);
-  //   expect(find.text('Failed'), findsOneWidget);
-  // });
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Removed from Watchlist'), findsOneWidget);
+  });
 
   testWidgets(
-    'should display progress bar when recommendation loading',
-    (WidgetTester tester) async {
-      when(mockMovieDetailCubit.stream)
-          .thenAnswer((_) => Stream.value(MovieRecommendationLoading()));
-      when(mockMovieDetailCubit.state).thenReturn(MovieRecommendationLoading());
-      when(mockMovieDetailCubit.stream).thenAnswer(
-          (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
-      when(mockMovieDetailCubit.state)
-          .thenReturn(const MovieDetailLoaded(testMovieDetail));
-      when(mockWatchlistCubit.stream)
-          .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
-      when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+      'Watchlist button should display AlertDialog when add to watchlist failed',
+      (WidgetTester tester) async {
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
+    when(mockMovieDetailCubit.state)
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-      final loadingFinder = find.byType(CircularProgressIndicator);
+    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pump();
 
-      await tester
-          .pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-      expect(loadingFinder, findsOneWidget);
-    },
-  );
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
+  });
 
-  // testWidgets('Page should display recommendation ListView when data loaded',
-  //     (WidgetTester tester) async {
-  //   when(mockMovieDetailCubit.stream).thenAnswer(
-  //       (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
-  //   when(mockMovieDetailCubit.state)
-  //       .thenReturn(const MovieDetailLoaded(testMovieDetail));
-  //   when(mockMovieDetailCubit.stream).thenAnswer(
-  //       (_) => Stream.value(MovieRecommendationLoaded(testMovieList)));
-  //   when(mockMovieDetailCubit.state)
-  //       .thenReturn(MovieRecommendationLoaded(testMovieList));
-  //   when(mockWatchlistCubit.stream)
-  //       .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
-  //   when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+  testWidgets(
+      'Watchlist button should display AlertDialog when remove from watchlist failed',
+      (WidgetTester tester) async {
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+    when(mockMovieDetailCubit.stream).thenAnswer((_) =>
+        Stream.value(const MovieDetailLoaded(testMovieDetail, <Movie>[])));
+    when(mockMovieDetailCubit.state)
+        .thenReturn(const MovieDetailLoaded(testMovieDetail, <Movie>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-  //   final listViewWidget = find.byKey(const Key('recommended_list'));
+    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pump();
 
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(listViewWidget, findsOneWidget);
-  // });
-
-  // testWidgets('Page should display recommended error message when Error',
-  //     (WidgetTester tester) async {
-  //   when(mockNotifier.movieState).thenReturn(RequestState.loaded);
-  //   when(mockNotifier.movie).thenReturn(testMovieDetail);
-  //   when(mockNotifier.recommendationState).thenReturn(RequestState.error);
-  //   when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
-  //   when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockNotifier.message).thenReturn('Error message');
-
-  //   final textWidget = find.byKey(const Key('recommended_error'));
-
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(textWidget, findsOneWidget);
-  // });
-
-  // testWidgets('should pop', (WidgetTester tester) async {
-  //   when(mockMovieDetailCubit.stream).thenAnswer(
-  //       (_) => Stream.value(const MovieDetailLoaded(testMovieDetail)));
-  //   when(mockMovieDetailCubit.state)
-  //       .thenReturn(const MovieDetailLoaded(testMovieDetail));
-  //   when(mockMovieDetailCubit.stream).thenAnswer(
-  //       (_) => Stream.value(MovieRecommendationLoaded(testMovieList)));
-  //   when(mockMovieDetailCubit.state)
-  //       .thenReturn(MovieRecommendationLoaded(testMovieList));
-  //   when(mockWatchlistCubit.stream)
-  //       .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
-  //   when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
-
-  //   final backButtonFinder = find.byKey(const Key('back_from_detail'));
-
-  //   await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
-
-  //   expect(backButtonFinder, findsOneWidget);
-
-  //   await tester.tap(backButtonFinder);
-  //   await tester.pumpAndSettle();
-
-  //   expect(backButtonFinder, findsNothing);
-  // });
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
+  });
 }

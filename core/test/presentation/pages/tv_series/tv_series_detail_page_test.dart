@@ -1,365 +1,228 @@
-import 'package:core/domain/entities/tv_series/episode.dart';
 import 'package:core/domain/entities/tv_series/tv_series.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
+import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/tv_series/tv_series_detail_page.dart';
 import 'package:core/presentation/widgets/episode_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
 import '../../../dummy_data/tv_series/dummy_tv_series_object.dart';
+import 'tv_series_detail_page_test.mocks.dart';
 
-@GenerateMocks([TvSeriesDetailCubit])
+@GenerateMocks([TvSeriesDetailCubit, WatchlistCubit])
 void main() {
-  // late MockTvSeriesDetailNotifier mockTvSeriesDetailNotifier;
-  // late MockWatchlistNotifier mockWatchlistNotifier;
-  // late MockMovieDetailNotifier mockMovieDetailNotifier;
+  late MockTvSeriesDetailCubit mockTvSeriesDetailCubit;
+  late MockWatchlistCubit mockWatchlistCubit;
 
-  // setUp(() {
-  //   mockTvSeriesDetailNotifier = MockTvSeriesDetailNotifier();
-  //   mockWatchlistNotifier = MockWatchlistNotifier();
-  //   mockMovieDetailNotifier = MockMovieDetailNotifier();
-  // });
+  setUp(() {
+    mockTvSeriesDetailCubit = MockTvSeriesDetailCubit();
+    mockWatchlistCubit = MockWatchlistCubit();
+  });
 
-  // Widget _makeTestableWidget(Widget body) {
-  //   return ChangeNotifierProvider<MovieDetailNotifier>.value(
-  //     value: mockMovieDetailNotifier,
-  //     child: ChangeNotifierProvider<TvSeriesDetailNotifier>.value(
-  //       value: mockTvSeriesDetailNotifier,
-  //       child: ChangeNotifierProvider<WatchlistNotifier>.value(
-  //         value: mockWatchlistNotifier,
-  //         child: MaterialApp(
-  //           home: body,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _makeTestableWidget(Widget body) {
+    return BlocProvider<TvSeriesDetailCubit>.value(
+      value: mockTvSeriesDetailCubit,
+      child: BlocProvider<WatchlistCubit>.value(
+        value: mockWatchlistCubit,
+        child: MaterialApp(
+          home: body,
+        ),
+      ),
+    );
+  }
 
-  // testWidgets(
-  //   "Watchlist button should display add icon when tv series not added to watchlist",
-  //   (WidgetTester tester) async {
-  //     when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //         .thenReturn(testTvSeriesDetail);
-  //     when(mockTvSeriesDetailNotifier.recommendedState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //         .thenReturn(<TvSeries>[]);
-  //     when(mockTvSeriesDetailNotifier.episodeState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //     when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(false);
+  testWidgets(
+    'should display proggress bar when movie and recommendation loading',
+    (WidgetTester tester) async {
+      when(mockTvSeriesDetailCubit.stream)
+          .thenAnswer((_) => Stream.value(TvSeriesDetailLoading()));
+      when(mockTvSeriesDetailCubit.state).thenReturn(TvSeriesDetailLoading());
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(WatchlistInitial()));
+      when(mockWatchlistCubit.state).thenReturn(WatchlistInitial());
 
-  //     final watchlistButtonIcon = find.byIcon(Icons.add);
+      final loadingFinder = find.byType(CircularProgressIndicator);
 
-  //     await tester
-  //         .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      await tester
+          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      expect(loadingFinder, findsOneWidget);
+    },
+  );
+  testWidgets(
+    'should display error message when get data is error',
+    (WidgetTester tester) async {
+      when(mockTvSeriesDetailCubit.stream).thenAnswer(
+          (_) => Stream.value(const TvSeriesDetailError('Error Message')));
+      when(mockTvSeriesDetailCubit.state)
+          .thenReturn(const TvSeriesDetailError('Error Message'));
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(WatchlistInitial()));
+      when(mockWatchlistCubit.state).thenReturn(WatchlistInitial());
 
-  //     expect(watchlistButtonIcon, findsOneWidget);
-  //   },
-  // );
+      final errorFinder = find.text('Error Message');
 
-  // testWidgets(
-  //   "Watchlist button should display check icon when tv series added to watchlist",
-  //   (WidgetTester tester) async {
-  //     when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //         .thenReturn(testTvSeriesDetail);
-  //     when(mockTvSeriesDetailNotifier.recommendedState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //         .thenReturn(<TvSeries>[]);
-  //     when(mockTvSeriesDetailNotifier.episodeState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //     when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
+      await tester
+          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      expect(errorFinder, findsOneWidget);
+    },
+  );
 
-  //     final watchlistButtonIcon = find.byIcon(Icons.check);
+  testWidgets(
+    "Watchlist button should display add icon when tv series not added to watchlist",
+    (WidgetTester tester) async {
+      when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+      when(mockTvSeriesDetailCubit.state).thenReturn(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+      when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
 
-  //     await tester
-  //         .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      final watchlistButtonIcon = find.byIcon(Icons.add);
 
-  //     expect(watchlistButtonIcon, findsOneWidget);
-  //   },
-  // );
+      await tester
+          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
-  // testWidgets(
-  //     'Watchlist button should display snackbar when added to watchlist',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(false);
-  //   when(mockMovieDetailNotifier.watchlistMessage)
-  //       .thenReturn('Added to Watchlist');
+      expect(watchlistButtonIcon, findsOneWidget);
+    },
+  );
 
-  //   final watchlistButton = find.byType(ElevatedButton);
+  testWidgets(
+    "Watchlist button should display check icon when tv series added to watchlist",
+    (WidgetTester tester) async {
+      when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+      when(mockTvSeriesDetailCubit.state).thenReturn(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
+      when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
 
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      final watchlistButtonIcon = find.byIcon(Icons.check);
 
-  //   expect(find.byIcon(Icons.add), findsOneWidget);
+      await tester
+          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
+      expect(watchlistButtonIcon, findsOneWidget);
+    },
+  );
 
-  //   expect(find.byType(SnackBar), findsOneWidget);
-  //   expect(find.text('Added to Watchlist'), findsOneWidget);
-  // });
+  testWidgets(
+      'Watchlist button should display snackbar when added to watchlist',
+      (WidgetTester tester) async {
+    when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+    when(mockTvSeriesDetailCubit.state).thenReturn(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+    when(mockWatchlistCubit.stream).thenAnswer(
+        (_) => Stream.value(const WatchlistMessage('Added to Watchlist')));
+    when(mockWatchlistCubit.state)
+        .thenReturn(const WatchlistMessage('Added to Watchlist'));
 
-  // testWidgets(
-  //     'Watchlist button should display snackbar when removed from watchlist',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockMovieDetailNotifier.watchlistMessage)
-  //       .thenReturn('Removed from Watchlist');
+    await tester
+        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+    await tester.pump();
 
-  //   final watchlistButton = find.byType(ElevatedButton);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Added to Watchlist'), findsOneWidget);
+  });
 
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+  testWidgets(
+      'Watchlist button should display snackbar when removed from watchlist',
+      (WidgetTester tester) async {
+    when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+    when(mockTvSeriesDetailCubit.state).thenReturn(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
+    when(mockWatchlistCubit.stream).thenAnswer(
+        (_) => Stream.value(const WatchlistMessage('Removed from Watchlist')));
+    when(mockWatchlistCubit.state)
+        .thenReturn(const WatchlistMessage('Removed from Watchlist'));
 
-  //   expect(find.byIcon(Icons.check), findsOneWidget);
+    await tester
+        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+    await tester.pump();
 
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Removed from Watchlist'), findsOneWidget);
+  });
 
-  //   expect(find.byType(SnackBar), findsOneWidget);
-  //   expect(find.text('Removed from Watchlist'), findsOneWidget);
-  // });
+  testWidgets(
+      'Watchlist button should display AlertDialog when add to watchlist failed',
+      (WidgetTester tester) async {
+    when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+    when(mockTvSeriesDetailCubit.state).thenReturn(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-  // testWidgets(
-  //     'Watchlist button should display AlertDialog when add to watchlist failed',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(false);
-  //   when(mockMovieDetailNotifier.watchlistMessage).thenReturn('Failed');
+    await tester
+        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
-  //   final watchlistButton = find.byType(ElevatedButton);
+    await tester.pump();
 
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
+  });
 
-  //   expect(find.byIcon(Icons.add), findsOneWidget);
+  testWidgets(
+      'Watchlist button should display AlertDialog when removed from watchlist failed',
+      (WidgetTester tester) async {
+    when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+    when(mockTvSeriesDetailCubit.state).thenReturn(
+        const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistStatus(true)));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(true));
+    when(mockWatchlistCubit.stream)
+        .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
+    when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
+    await tester
+        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
-  //   expect(find.byType(AlertDialog), findsOneWidget);
-  //   expect(find.text('Failed'), findsOneWidget);
-  // });
+    await tester.pump();
 
-  // testWidgets(
-  //     'Watchlist button should display AlertDialog when removed from watchlist failed',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockMovieDetailNotifier.watchlistMessage).thenReturn('Failed');
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
+  });
 
-  //   final watchlistButton = find.byType(ElevatedButton);
+  testWidgets(
+    "should display Episode Card List Widget",
+    (WidgetTester tester) async {
+      when(mockTvSeriesDetailCubit.stream).thenAnswer((_) => Stream.value(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[])));
+      when(mockTvSeriesDetailCubit.state).thenReturn(
+          const TvSeriesDetailLoaded(testTvSeriesDetail, <TvSeries>[]));
+      when(mockWatchlistCubit.stream)
+          .thenAnswer((_) => Stream.value(const WatchlistStatus(false)));
+      when(mockWatchlistCubit.state).thenReturn(const WatchlistStatus(false));
 
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+      final seasonTabbar = find.byType(TabBarView);
+      final detailEpisodeCard = find.byType(EpisodeCardList);
 
-  //   expect(find.byIcon(Icons.check), findsOneWidget);
+      await tester
+          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
-  //   await tester.tap(watchlistButton);
-  //   await tester.pump();
+      expect(seasonTabbar, findsOneWidget);
+      await tester.pump();
 
-  //   expect(find.byType(AlertDialog), findsOneWidget);
-  //   expect(find.text('Failed'), findsOneWidget);
-  // });
-
-  // testWidgets(
-  //   "should display Episode Card List Widget",
-  //   (WidgetTester tester) async {
-  //     when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //         .thenReturn(testTvSeriesDetail);
-  //     when(mockTvSeriesDetailNotifier.recommendedState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //         .thenReturn(<TvSeries>[]);
-  //     when(mockTvSeriesDetailNotifier.episodeState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //     when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-
-  //     final detailEpisodeCard = find.byType(EpisodeCardList);
-
-  //     await tester
-  //         .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //     expect(detailEpisodeCard, findsOneWidget);
-  //   },
-  // );
-
-  // testWidgets(
-  //     'Page should display center progress bar when recommendation is loading',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loading);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-
-  //   final loadingWidget = find.byKey(const Key('recommended_loading'));
-
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //   expect(loadingWidget, findsOneWidget);
-  // });
-
-  // testWidgets('Page should display recommendation ListView when data loaded',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-
-  //   final listViewWidget = find.byKey(const Key('recommended_list'));
-
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //   expect(listViewWidget, findsOneWidget);
-  // });
-
-  // testWidgets('Page should display recommended error message when Error',
-  //     (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.error);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockTvSeriesDetailNotifier.message).thenReturn('Error message');
-
-  //   final textWidget = find.byKey(const Key('recommended_error'));
-
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //   expect(textWidget, findsOneWidget);
-  // });
-
-  // testWidgets('should pop', (WidgetTester tester) async {
-  //   when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //       .thenReturn(testTvSeriesDetail);
-  //   when(mockTvSeriesDetailNotifier.recommendedState)
-  //       .thenReturn(RequestState.loaded);
-  //   when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //       .thenReturn(<TvSeries>[]);
-  //   when(mockTvSeriesDetailNotifier.episodeState)
-  //       .thenReturn(RequestState.error);
-  //   when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //   when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-  //   when(mockTvSeriesDetailNotifier.message).thenReturn('Success');
-
-  //   final backButtonFinder = find.byIcon(Icons.arrow_back);
-
-  //   await tester
-  //       .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //   expect(backButtonFinder, findsOneWidget);
-
-  //   await tester.tap(backButtonFinder);
-  //   await tester.pumpAndSettle();
-
-  //   expect(backButtonFinder, findsNothing);
-  // });
-
-  // testWidgets(
-  //   "should display data when tv is added to watchlist",
-  //   (WidgetTester tester) async {
-  //     when(mockTvSeriesDetailNotifier.tvSeriesState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.tvSeriesDetail)
-  //         .thenReturn(testTvSeriesDetail);
-  //     when(mockTvSeriesDetailNotifier.recommendedState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.recomendedTvSeries)
-  //         .thenReturn(<TvSeries>[]);
-  //     when(mockTvSeriesDetailNotifier.episodeState)
-  //         .thenReturn(RequestState.loaded);
-  //     when(mockTvSeriesDetailNotifier.episodeTvSeries).thenReturn(<Episode>[]);
-  //     when(mockMovieDetailNotifier.isAddedToWatchlist).thenReturn(true);
-
-  //     final contentFinder = find.byType(DetailTvContent);
-
-  //     await tester
-  //         .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
-
-  //     expect(contentFinder, findsOneWidget);
-  //   },
-  // );
+      expect(detailEpisodeCard, findsOneWidget);
+    },
+  );
 }

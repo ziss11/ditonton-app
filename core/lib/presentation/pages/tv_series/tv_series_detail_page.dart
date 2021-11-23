@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:core/domain/entities/movie/genre.dart';
 import 'package:core/domain/entities/movie/movie.dart';
-import 'package:core/domain/entities/tv_series/tv_series.dart';
 import 'package:core/domain/entities/tv_series/tv_series_detail.dart';
 import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
@@ -39,32 +38,57 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      body: BlocBuilder(
-        builder: (context, detail) {
-          return BlocBuilder(
-            builder: (context, status) {
-              if (detail is TvSeriesDetailLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+    return BlocListener<WatchlistCubit, WatchlistState>(
+      listenWhen: (context, state) => state is WatchlistMessage,
+      listener: (context, message) {
+        if (message is WatchlistMessage) {
+          if (message.watchlistMessage == WatchlistCubit.addWatchlistMessage ||
+              message.watchlistMessage ==
+                  WatchlistCubit.removeWatchlistMessage) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message.watchlistMessage),
+              ),
+            );
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text(message.watchlistMessage),
                 );
-              } else if (detail is TvSeriesDetailLoaded &&
-                  status is WatchlistStatus) {
-                return SafeArea(
-                  child: DetailTvContent(
-                    tv: detail.tvSeriesDetail,
-                    isAddedWatchlist: status.isAddedToWatchlist,
-                  ),
-                );
-              } else if (detail is TvSeriesDetailError) {
-                return Text(detail.message);
-              } else {
-                return const SizedBox();
-              }
-            },
-          );
-        },
+              },
+            );
+          }
+        }
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: BlocBuilder<TvSeriesDetailCubit, TvSeriesDetailState>(
+          builder: (context, detail) {
+            return BlocBuilder<WatchlistCubit, WatchlistState>(
+              builder: (context, status) {
+                if (detail is TvSeriesDetailLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (detail is TvSeriesDetailLoaded &&
+                    status is WatchlistStatus) {
+                  return SafeArea(
+                    child: DetailTvContent(
+                      tv: detail.tvSeriesDetail,
+                      isAddedWatchlist: status.isAddedToWatchlist,
+                    ),
+                  );
+                } else if (detail is TvSeriesDetailError) {
+                  return Text(detail.message);
+                } else {
+                  return const SizedBox();
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -149,35 +173,6 @@ class _DetailTvContentState extends State<DetailTvContent>
                                     ..deleteWatchlist(tv.id)
                                     ..fetchWatchlist();
                                 }
-                                var watchlistMessage = '';
-
-                                BlocListener<WatchlistCubit, WatchlistState>(
-                                  listener: (context, message) {
-                                    if (message is WatchlistMessage) {
-                                      watchlistMessage =
-                                          message.watchlistMessage;
-                                    }
-                                  },
-                                );
-
-                                if (watchlistMessage == 'Added to Watchlist' ||
-                                    watchlistMessage ==
-                                        'Remove from Watchlist') {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(watchlistMessage),
-                                    ),
-                                  );
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Text(watchlistMessage),
-                                      );
-                                    },
-                                  );
-                                }
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -252,21 +247,20 @@ class _DetailTvContentState extends State<DetailTvContent>
                             BlocBuilder<TvSeriesDetailCubit,
                                 TvSeriesDetailState>(
                               builder: (context, recommendations) {
-                                if (recommendations
-                                    is TvSeriesRecommendationLoading) {
+                                if (recommendations is TvSeriesDetailLoading) {
                                   return const Center(
                                     child: CircularProgressIndicator(
                                       key: Key('recommended_loading'),
                                     ),
                                   );
                                 } else if (recommendations
-                                    is TvSeriesRecommendationError) {
+                                    is TvSeriesDetailError) {
                                   return Text(
                                     recommendations.message,
                                     key: const Key('recommended_error'),
                                   );
                                 } else if (recommendations
-                                    is TvSeriesRecommendationLoaded) {
+                                    is TvSeriesDetailLoaded) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(
@@ -274,7 +268,7 @@ class _DetailTvContentState extends State<DetailTvContent>
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
                                         final tv = recommendations
-                                            .tvSeriesRecommendation[index];
+                                            .recommendationTv[index];
                                         return Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
@@ -298,7 +292,7 @@ class _DetailTvContentState extends State<DetailTvContent>
                                         );
                                       },
                                       itemCount: recommendations
-                                          .tvSeriesRecommendation.length,
+                                          .recommendationTv.length,
                                     ),
                                   );
                                 } else {

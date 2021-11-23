@@ -2,13 +2,12 @@
 // in core/test/presentation/pages/movie/top_rated_movies_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i6;
+import 'dart:async' as _i4;
 
-import 'package:bloc/bloc.dart' as _i7;
-import 'package:core/domain/usecases/movie/get_now_playing_movies.dart' as _i2;
-import 'package:core/domain/usecases/movie/get_popular_movies.dart' as _i3;
-import 'package:core/domain/usecases/movie/get_top_rated_movies.dart' as _i4;
-import 'package:core/presentation/cubit/movie/movie_list_cubit.dart' as _i5;
+import 'package:bloc/bloc.dart' as _i5;
+import 'package:core/domain/usecases/movie/get_top_rated_movies.dart' as _i2;
+import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart'
+    as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,67 +19,48 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 
-class _FakeGetNowPlayingMovies_0 extends _i1.Fake
-    implements _i2.GetNowPlayingMovies {}
+class _FakeGetTopRatedMovies_0 extends _i1.Fake
+    implements _i2.GetTopRatedMovies {}
 
-class _FakeGetPopularMovies_1 extends _i1.Fake implements _i3.GetPopularMovies {
-}
+class _FakeMovieTopRatedState_1 extends _i1.Fake
+    implements _i3.MovieTopRatedState {}
 
-class _FakeGetTopRatedMovies_2 extends _i1.Fake
-    implements _i4.GetTopRatedMovies {}
+class _FakeStreamSubscription_2<T> extends _i1.Fake
+    implements _i4.StreamSubscription<T> {}
 
-class _FakeMovieListState_3 extends _i1.Fake implements _i5.MovieListState {}
-
-class _FakeStreamSubscription_4<T> extends _i1.Fake
-    implements _i6.StreamSubscription<T> {}
-
-/// A class which mocks [MovieListCubit].
+/// A class which mocks [MovieTopRatedCubit].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMovieListCubit extends _i1.Mock implements _i5.MovieListCubit {
-  MockMovieListCubit() {
+class MockMovieTopRatedCubit extends _i1.Mock
+    implements _i3.MovieTopRatedCubit {
+  MockMovieTopRatedCubit() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.GetNowPlayingMovies get nowPlayingMovies => (super.noSuchMethod(
-      Invocation.getter(#nowPlayingMovies),
-      returnValue: _FakeGetNowPlayingMovies_0()) as _i2.GetNowPlayingMovies);
-  @override
-  _i3.GetPopularMovies get popularMovies =>
-      (super.noSuchMethod(Invocation.getter(#popularMovies),
-          returnValue: _FakeGetPopularMovies_1()) as _i3.GetPopularMovies);
-  @override
-  _i4.GetTopRatedMovies get topRatedMovies =>
+  _i2.GetTopRatedMovies get topRatedMovies =>
       (super.noSuchMethod(Invocation.getter(#topRatedMovies),
-          returnValue: _FakeGetTopRatedMovies_2()) as _i4.GetTopRatedMovies);
+          returnValue: _FakeGetTopRatedMovies_0()) as _i2.GetTopRatedMovies);
   @override
-  _i5.MovieListState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _FakeMovieListState_3()) as _i5.MovieListState);
+  _i3.MovieTopRatedState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeMovieTopRatedState_1()) as _i3.MovieTopRatedState);
   @override
-  _i6.Stream<_i5.MovieListState> get stream =>
+  _i4.Stream<_i3.MovieTopRatedState> get stream =>
       (super.noSuchMethod(Invocation.getter(#stream),
-              returnValue: Stream<_i5.MovieListState>.empty())
-          as _i6.Stream<_i5.MovieListState>);
+              returnValue: Stream<_i3.MovieTopRatedState>.empty())
+          as _i4.Stream<_i3.MovieTopRatedState>);
   @override
   bool get isClosed =>
       (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
           as bool);
   @override
-  void fetchNowPlayingMovie() =>
-      super.noSuchMethod(Invocation.method(#fetchNowPlayingMovie, []),
-          returnValueForMissingStub: null);
-  @override
-  void fetchPopularMovie() =>
-      super.noSuchMethod(Invocation.method(#fetchPopularMovie, []),
-          returnValueForMissingStub: null);
-  @override
   void fetchTopRatedMovie() =>
       super.noSuchMethod(Invocation.method(#fetchTopRatedMovie, []),
           returnValueForMissingStub: null);
   @override
-  _i6.StreamSubscription<_i5.MovieListState> listen(
-          void Function(_i5.MovieListState)? onData,
+  _i4.StreamSubscription<_i3.MovieTopRatedState> listen(
+          void Function(_i3.MovieTopRatedState)? onData,
           {Function? onError,
           void Function()? onDone,
           bool? cancelOnError}) =>
@@ -92,14 +72,14 @@ class MockMovieListCubit extends _i1.Mock implements _i5.MovieListCubit {
                 #onDone: onDone,
                 #cancelOnError: cancelOnError
               }),
-              returnValue: _FakeStreamSubscription_4<_i5.MovieListState>())
-          as _i6.StreamSubscription<_i5.MovieListState>);
+              returnValue: _FakeStreamSubscription_2<_i3.MovieTopRatedState>())
+          as _i4.StreamSubscription<_i3.MovieTopRatedState>);
   @override
-  void emit(_i5.MovieListState? state) =>
+  void emit(_i3.MovieTopRatedState? state) =>
       super.noSuchMethod(Invocation.method(#emit, [state]),
           returnValueForMissingStub: null);
   @override
-  void onChange(_i7.Change<_i5.MovieListState>? change) =>
+  void onChange(_i5.Change<_i3.MovieTopRatedState>? change) =>
       super.noSuchMethod(Invocation.method(#onChange, [change]),
           returnValueForMissingStub: null);
   @override
@@ -111,9 +91,9 @@ class MockMovieListCubit extends _i1.Mock implements _i5.MovieListCubit {
       super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
   @override
-  _i6.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+  _i4.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
       returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
+      returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
   @override
   String toString() => super.toString();
 }

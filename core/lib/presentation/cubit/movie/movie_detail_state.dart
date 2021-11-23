@@ -14,35 +14,17 @@ class MovieDetailLoading extends MovieDetailState {}
 
 class MovieDetailLoaded extends MovieDetailState {
   final MovieDetail detailMovie;
+  final List<Movie> recomendationMovie;
 
-  const MovieDetailLoaded(this.detailMovie);
+  const MovieDetailLoaded(this.detailMovie, this.recomendationMovie);
   @override
-  List<Object?> get props => [detailMovie];
+  List<Object?> get props => [detailMovie, recomendationMovie];
 }
 
 class MovieDetailError extends MovieDetailState {
   final String message;
 
   const MovieDetailError(this.message);
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class MovieRecommendationLoading extends MovieDetailState {}
-
-class MovieRecommendationLoaded extends MovieDetailState {
-  final List<Movie> recommendedMovie;
-
-  const MovieRecommendationLoaded(this.recommendedMovie);
-  @override
-  List<Object?> get props => [recommendedMovie];
-}
-
-class MovieRecommendationError extends MovieDetailState {
-  final String message;
-
-  const MovieRecommendationError(this.message);
 
   @override
   List<Object?> get props => [message];

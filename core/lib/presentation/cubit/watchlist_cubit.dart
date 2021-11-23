@@ -16,7 +16,7 @@ class WatchlistCubit extends Cubit<WatchlistState> {
   final RemoveWatchlist removeWatchlist;
 
   static const addWatchlistMessage = 'Added to Watchlist';
-  static const removeWatchlistMessage = 'Remove to Watchlist';
+  static const removeWatchlistMessage = 'Removed from Watchlist';
 
   WatchlistCubit({
     required this.watchlist,

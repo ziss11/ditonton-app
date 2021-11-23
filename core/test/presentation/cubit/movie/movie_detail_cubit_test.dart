@@ -1,10 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
-import 'package:core/domain/usecases/get_watchlist_status.dart';
 import 'package:core/domain/usecases/movie/get_movie_detail.dart';
 import 'package:core/domain/usecases/movie/get_movie_recommendations.dart';
-import 'package:core/domain/usecases/remove_watchlist.dart';
-import 'package:core/domain/usecases/save_watchlist.dart';
 import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -71,9 +68,7 @@ void main() {
       act: (cubit) => cubit.fetchMovieDetail(testMovie.id),
       expect: () => [
         MovieDetailLoading(),
-        const MovieDetailLoaded(testMovieDetail),
-        MovieRecommendationLoading(),
-        MovieRecommendationLoaded(testMovieList),
+        MovieDetailLoaded(testMovieDetail, testMovieList),
       ],
       verify: (cubit) {
         verify(mockGetMovieDetail.execute(testMovie.id));

@@ -14,11 +14,12 @@ class TvSeriesDetailLoading extends TvSeriesDetailState {}
 
 class TvSeriesDetailLoaded extends TvSeriesDetailState {
   final TvSeriesDetail tvSeriesDetail;
+  final List<TvSeries> recommendationTv;
 
-  const TvSeriesDetailLoaded(this.tvSeriesDetail);
+  const TvSeriesDetailLoaded(this.tvSeriesDetail, this.recommendationTv);
 
   @override
-  List<Object?> get props => [tvSeriesDetail];
+  List<Object?> get props => [tvSeriesDetail, recommendationTv];
 }
 
 class TvSeriesDetailError extends TvSeriesDetailState {
@@ -30,41 +31,23 @@ class TvSeriesDetailError extends TvSeriesDetailState {
   List<Object?> get props => [message];
 }
 
-class TvSeriesEpisodeLoading extends TvSeriesDetailState {}
+class EpisodeInitial extends TvSeriesDetailState {}
 
-class TvSeriesEpisodeLoaded extends TvSeriesDetailState {
-  final List<Episode> tvSeriesEpisode;
+class EpisodeLoading extends TvSeriesDetailState {}
 
-  const TvSeriesEpisodeLoaded(this.tvSeriesEpisode);
+class EpisodeLoaded extends TvSeriesDetailState {
+  final List<Episode> episode;
+
+  const EpisodeLoaded(this.episode);
 
   @override
-  List<Object?> get props => [tvSeriesEpisode];
+  List<Object?> get props => [episode];
 }
 
-class TvSeriesEpisodeError extends TvSeriesDetailState {
+class EpisodeError extends TvSeriesDetailState {
   final String message;
 
-  const TvSeriesEpisodeError(this.message);
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class TvSeriesRecommendationLoading extends TvSeriesDetailState {}
-
-class TvSeriesRecommendationLoaded extends TvSeriesDetailState {
-  final List<TvSeries> tvSeriesRecommendation;
-
-  const TvSeriesRecommendationLoaded(this.tvSeriesRecommendation);
-
-  @override
-  List<Object?> get props => [tvSeriesRecommendation];
-}
-
-class TvSeriesRecommendationError extends TvSeriesDetailState {
-  final String message;
-
-  const TvSeriesRecommendationError(this.message);
+  const EpisodeError(this.message);
 
   @override
   List<Object?> get props => [message];
