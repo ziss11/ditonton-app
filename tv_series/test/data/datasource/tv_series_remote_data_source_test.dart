@@ -10,8 +10,8 @@ import 'package:tv_series/data/models/epidose_response.dart';
 import 'package:tv_series/data/models/tv_series_detail_model.dart';
 import 'package:tv_series/data/models/tv_series_response.dart';
 
-import '../../../../movie/test/json_reader.dart';
 import '../../helpers/test_helper.mocks.dart';
+import '../../json_reader.dart';
 
 void main() {
   late TvSeriesRemoteDataSourceImpl dataSource;
