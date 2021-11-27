@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
-import 'package:core/domain/entities/movie/movie.dart';
 import 'package:core/domain/usecases/get_watchlist.dart';
 import 'package:core/domain/usecases/get_watchlist_status.dart';
 import 'package:core/domain/usecases/remove_watchlist.dart';
 import 'package:core/domain/usecases/save_watchlist.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:movie/domain/entities/movie.dart';
 
 part 'watchlist_state.dart';
 
@@ -40,11 +40,7 @@ class WatchlistCubit extends Cubit<WatchlistState> {
         emit(WatchlistError(failure.message));
       },
       (data) async {
-        if (data.isNotEmpty) {
-          emit(WatchlistLoaded(data));
-        } else {
-          emit(WatchlistInitial());
-        }
+        emit(WatchlistLoaded(data));
       },
     );
   }

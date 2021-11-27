@@ -1,42 +1,45 @@
+import 'dart:io';
+
 import 'package:core/data/datasources/db/database_helper.dart';
-import 'package:core/data/datasources/movie/movie_local_data_source.dart';
-import 'package:core/data/datasources/movie/movie_remote_data_source.dart';
-import 'package:core/data/datasources/tv_series/tv_series_remote_data_source.dart';
-import 'package:core/data/repositories/movie_repository_impl.dart';
-import 'package:core/data/repositories/tv_series_repository_impl.dart';
-import 'package:core/domain/repositories/movie_repository.dart';
-import 'package:core/domain/repositories/tv_series_repository.dart';
+import 'package:movie/data/datasource/movie_local_data_source.dart';
+import 'package:movie/data/datasource/movie_remote_data_source.dart';
+import 'package:movie/data/repositories/movie_repository_impl.dart';
+import 'package:movie/domain/repositories/movie_repository.dart';
 import 'package:core/domain/usecases/get_watchlist.dart';
 import 'package:core/domain/usecases/get_watchlist_status.dart';
-import 'package:core/domain/usecases/movie/get_movie_detail.dart';
-import 'package:core/domain/usecases/movie/get_movie_recommendations.dart';
-import 'package:core/domain/usecases/movie/get_now_playing_movies.dart';
-import 'package:core/domain/usecases/movie/get_popular_movies.dart';
-import 'package:core/domain/usecases/movie/get_top_rated_movies.dart';
 import 'package:core/domain/usecases/remove_watchlist.dart';
 import 'package:core/domain/usecases/save_watchlist.dart';
-import 'package:core/domain/usecases/tv_series/get_detail_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_now_playing_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_popular_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_recommendation_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_top_rated_tv_series.dart';
-import 'package:core/domain/usecases/tv_series/get_tv_series_episode.dart';
-import 'package:core/presentation/cubit/movie/movie_detail_cubit.dart';
-import 'package:core/presentation/cubit/movie/movie_now_playing_cubit.dart';
-import 'package:core/presentation/cubit/movie/movie_popular_cubit.dart';
-import 'package:core/presentation/cubit/movie/movie_top_rated_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_detail_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_now_playing_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_popular_cubit.dart';
-import 'package:core/presentation/cubit/tv_series/tv_series_top_rated_cubit.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movie/domain/usecase/get_movie_detail.dart';
+import 'package:movie/domain/usecase/get_movie_recommendations.dart';
+import 'package:movie/domain/usecase/get_now_playing_movies.dart';
+import 'package:movie/domain/usecase/get_popular_movies.dart';
+import 'package:movie/domain/usecase/get_top_rated_movies.dart';
+import 'package:movie/presentation/cubit/movie_detail_cubit.dart';
+import 'package:movie/presentation/cubit/movie_now_playing_cubit.dart';
+import 'package:movie/presentation/cubit/movie_popular_cubit.dart';
+import 'package:movie/presentation/cubit/movie_top_rated_cubit.dart';
 import 'package:search/search.dart';
+import 'package:tv_series/data/datasource/tv_series_remote_data_source.dart';
+import 'package:tv_series/data/repositories/tv_series_repository_impl.dart';
+import 'package:tv_series/domain/repositories/tv_series_repository.dart';
+import 'package:tv_series/domain/usecase/get_detail_tv_series.dart';
+import 'package:tv_series/domain/usecase/get_now_playing_tv_series.dart';
+import 'package:tv_series/domain/usecase/get_popular_tv_series.dart';
+import 'package:tv_series/domain/usecase/get_recommendation_tv_series.dart';
+import 'package:tv_series/domain/usecase/get_top_rated_tv_series.dart';
+import 'package:tv_series/domain/usecase/get_tv_series_episode.dart';
+import 'package:tv_series/presentation/cubit/episode_cubit.dart';
+import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
+import 'package:tv_series/presentation/cubit/tv_series_now_playing_cubit.dart';
+import 'package:tv_series/presentation/cubit/tv_series_popular_cubit.dart';
+import 'package:tv_series/presentation/cubit/tv_series_top_rated_cubit.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+void init(HttpClient httpClient) {
   // cubit
   locator.registerFactory(
     () => MovieNowPlayingCubit(
@@ -60,7 +63,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => SearchMoviesCubit(
+    () => SearchMoviesBloc(
       searchMovies: locator(),
     ),
   );
@@ -68,6 +71,10 @@ void init() {
     () => TvSeriesDetailCubit(
       detailTvSeries: locator(),
       recommendationTvSeries: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => EpisodeCubit(
       tvSeriesEpisode: locator(),
     ),
   );
@@ -87,7 +94,7 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => SearchTvSeriesCubit(
+    () => SearchTvSeriesBloc(
       searchTvSeries: locator(),
     ),
   );
@@ -146,5 +153,5 @@ void init() {
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => IOClient(httpClient));
 }

@@ -1,25 +1,27 @@
-import 'package:core/domain/entities/tv_series/tv_series.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:search/presentation/cubit/tv_series/search_tv_series_cubit.dart';
-import 'package:search/presentation/pages/tv_series/search_tv_series_page.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:search/search.dart';
+import 'package:tv_series/domain/entities/tv_series.dart';
 
-import 'search_tv_series_page_test.mocks.dart';
+import 'search_tv_series_page_test.mock.dart';
 
-@GenerateMocks([SearchTvSeriesCubit])
 void main() {
-  late MockSearchTvSeriesCubit mockCubit;
+  late MockSearchTvSeriesBloc mockTvBloc;
+
+  setUpAll(() {
+    registerFallbackValue(SearchTvSeriesStateFake());
+    registerFallbackValue(SearchTvSeriesEventFake());
+  });
 
   setUp(() {
-    mockCubit = MockSearchTvSeriesCubit();
+    mockTvBloc = MockSearchTvSeriesBloc();
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return BlocProvider<SearchTvSeriesCubit>.value(
-      value: mockCubit,
+    return BlocProvider<SearchTvSeriesBloc>.value(
+      value: mockTvBloc,
       child: MaterialApp(
         home: body,
       ),
@@ -28,9 +30,9 @@ void main() {
 
   testWidgets('Page should display progress bar when loading',
       (WidgetTester tester) async {
-    when(mockCubit.stream)
+    when(() => mockTvBloc.stream)
         .thenAnswer((_) => Stream.value(SearchTvSeriesLoading()));
-    when(mockCubit.state).thenReturn(SearchTvSeriesLoading());
+    when(() => mockTvBloc.state).thenReturn(SearchTvSeriesLoading());
 
     final loadingWidget = find.byType(CircularProgressIndicator);
 
@@ -41,9 +43,8 @@ void main() {
 
   testWidgets('Page should display ListView when data is loaded',
       (WidgetTester tester) async {
-    when(mockCubit.stream).thenAnswer(
-        (_) => Stream.value(const SearchTvSeriesLoaded(<TvSeries>[])));
-    when(mockCubit.state).thenReturn(const SearchTvSeriesLoaded(<TvSeries>[]));
+    when(() => mockTvBloc.state)
+        .thenReturn(const SearchTvSeriesHasData(<TvSeries>[]));
 
     final listViewFinder = find.byType(ListView);
 
@@ -52,23 +53,9 @@ void main() {
     expect(listViewFinder, findsOneWidget);
   });
 
-  testWidgets('Page should display empty message when data is empty',
-      (WidgetTester tester) async {
-    when(mockCubit.stream)
-        .thenAnswer((_) => Stream.value(SearchTvSeriesInitial()));
-    when(mockCubit.state).thenReturn(SearchTvSeriesInitial());
-
-    final emptyMessage = find.byKey(const Key('empty_message'));
-
-    await tester.pumpWidget(_makeTestableWidget(const SearchTvSeriesPage()));
-
-    expect(emptyMessage, findsOneWidget);
-  });
   testWidgets('Page should display error message when error',
       (WidgetTester tester) async {
-    when(mockCubit.stream).thenAnswer(
-        (_) => Stream.value(const SearchTvSeriesError('Error Message')));
-    when(mockCubit.state)
+    when(() => mockTvBloc.state)
         .thenReturn(const SearchTvSeriesError('Error Message'));
 
     final emptyMessage = find.byKey(const Key('error_message'));
@@ -80,9 +67,8 @@ void main() {
 
   testWidgets('Page should display ListView when query id typed',
       (WidgetTester tester) async {
-    when(mockCubit.stream).thenAnswer(
-        (_) => Stream.value(const SearchTvSeriesLoaded(<TvSeries>[])));
-    when(mockCubit.state).thenReturn(const SearchTvSeriesLoaded(<TvSeries>[]));
+    when(() => mockTvBloc.state)
+        .thenReturn(const SearchTvSeriesHasData(<TvSeries>[]));
 
     final textfieldFinder = find.byKey(const Key('query_input'));
 
@@ -90,6 +76,6 @@ void main() {
     await tester.enterText(textfieldFinder, 'Venom');
     await tester.testTextInput.receiveAction(TextInputAction.done);
 
-    verify(mockCubit.fetchSearchTvSeries('Venom'));
+    verify(() => mockTvBloc.add(const OnChangeTvQuery('Venom')));
   });
 }

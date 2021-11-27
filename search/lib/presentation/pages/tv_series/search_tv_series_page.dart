@@ -1,12 +1,12 @@
 import 'package:core/core.dart';
-import 'package:core/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:search/presentation/cubit/tv_series/search_tv_series_cubit.dart';
+import 'package:search/search.dart';
+import 'package:tv_series/presentation/widget/tv_card_list.dart';
 
 class SearchTvSeriesPage extends StatelessWidget {
-  static const routeName = '/search-tv';
+  static const routeName = '/tv-search';
 
   const SearchTvSeriesPage({Key? key}) : super(key: key);
 
@@ -24,7 +24,7 @@ class SearchTvSeriesPage extends StatelessWidget {
             TextField(
               key: const Key('query_input'),
               onChanged: (query) {
-                context.read<SearchTvSeriesCubit>().fetchSearchTvSeries(query);
+                context.read<SearchTvSeriesBloc>().add(OnChangeTvQuery(query));
               },
               decoration: const InputDecoration(
                 hintText: 'Search title',
@@ -38,23 +38,13 @@ class SearchTvSeriesPage extends StatelessWidget {
               'Search Result',
               style: kHeading6,
             ),
-            BlocBuilder<SearchTvSeriesCubit, SearchTvSeriesState>(
+            BlocBuilder<SearchTvSeriesBloc, SearchTvSeriesState>(
               builder: (context, state) {
-                if (state is SearchTvSeriesInitial) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: const Center(
-                      key: Key('empty_message'),
-                      child: Text(
-                        'Search Not Found',
-                      ),
-                    ),
-                  );
-                } else if (state is SearchTvSeriesLoading) {
+                if (state is SearchTvSeriesLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state is SearchTvSeriesLoaded) {
+                } else if (state is SearchTvSeriesHasData) {
                   return Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(8),

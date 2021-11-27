@@ -6,31 +6,30 @@ import 'dart:async' as _i7;
 import 'dart:convert' as _i24;
 import 'dart:typed_data' as _i25;
 
-import 'package:core/data/datasources/db/database_helper.dart' as _i22;
-import 'package:core/data/datasources/movie/movie_local_data_source.dart'
-    as _i17;
-import 'package:core/data/datasources/movie/movie_remote_data_source.dart'
-    as _i15;
-import 'package:core/data/datasources/tv_series/tv_series_remote_data_source.dart'
-    as _i19;
-import 'package:core/data/models/movie/movie_detail_model.dart' as _i3;
-import 'package:core/data/models/movie/movie_model.dart' as _i16;
-import 'package:core/data/models/movie/movie_table.dart' as _i18;
-import 'package:core/data/models/tv_series/episode_model.dart' as _i21;
-import 'package:core/data/models/tv_series/tv_series_detail_model.dart' as _i4;
-import 'package:core/data/models/tv_series/tv_series_model.dart' as _i20;
-import 'package:core/domain/entities/movie/movie.dart' as _i9;
-import 'package:core/domain/entities/movie/movie_detail.dart' as _i10;
-import 'package:core/domain/entities/tv_series/episode.dart' as _i14;
-import 'package:core/domain/entities/tv_series/tv_series.dart' as _i12;
-import 'package:core/domain/entities/tv_series/tv_series_detail.dart' as _i13;
-import 'package:core/domain/repositories/movie_repository.dart' as _i6;
-import 'package:core/domain/repositories/tv_series_repository.dart' as _i11;
+import 'package:core/core.dart' as _i22;
 import 'package:core/utils/failure.dart' as _i8;
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:http/http.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:movie/data/datasource/movie_local_data_source.dart' as _i17;
+import 'package:movie/data/datasource/movie_remote_data_source.dart' as _i15;
+import 'package:movie/data/models/movie_detail_model.dart' as _i3;
+import 'package:movie/data/models/movie_model.dart' as _i16;
+import 'package:movie/data/models/movie_table.dart' as _i18;
+import 'package:movie/domain/entities/movie.dart' as _i9;
+import 'package:movie/domain/entities/movie_detail.dart' as _i10;
+import 'package:movie/domain/repositories/movie_repository.dart' as _i6;
 import 'package:sqflite_sqlcipher/sqflite.dart' as _i23;
+import 'package:tv_series/data/datasource/tv_series_remote_data_source.dart'
+    as _i19;
+import 'package:tv_series/data/models/episode_model.dart' as _i21;
+import 'package:tv_series/data/models/tv_series_detail_model.dart' as _i4;
+import 'package:tv_series/data/models/tv_series_model.dart' as _i20;
+import 'package:tv_series/domain/entities/episode.dart' as _i14;
+import 'package:tv_series/domain/entities/tv_series.dart' as _i12;
+import 'package:tv_series/domain/entities/tv_series_detail.dart' as _i13;
+import 'package:tv_series/domain/repositories/tv_series_repository.dart'
+    as _i11;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters

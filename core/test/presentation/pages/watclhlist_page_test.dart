@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../dummy_data/tv_series/dummy_tv_series_object.dart';
-import 'movie/movie_detail_page_test.mocks.dart';
+import '../../../../tv_series/test/dummy_data/dummy_tv_series_object.dart';
+import 'watclhlist_page_test.mocks.dart';
 
 @GenerateMocks([WatchlistCubit])
 void main() {
@@ -25,20 +25,6 @@ void main() {
       ),
     );
   }
-
-  testWidgets('Page should display progress bar when loading',
-      (WidgetTester tester) async {
-    when(mockCubit.stream).thenAnswer((_) => Stream.value(WatchlistLoading()));
-    when(mockCubit.state).thenReturn(WatchlistLoading());
-
-    final progressFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
-
-    await tester.pumpWidget(_makeTestableWidget(const WatchlistPage()));
-
-    expect(centerFinder, findsOneWidget);
-    expect(progressFinder, findsOneWidget);
-  });
 
   testWidgets('Page should display when data is loaded',
       (WidgetTester tester) async {

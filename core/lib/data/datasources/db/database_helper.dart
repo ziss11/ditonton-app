@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:core/data/models/movie/movie_table.dart';
 import 'package:core/utils/encrypt.dart';
+import 'package:movie/data/models/movie_table.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class DatabaseHelper {
@@ -35,8 +35,7 @@ class DatabaseHelper {
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute(
-        '''
+    await db.execute('''
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
         title TEXT,

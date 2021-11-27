@@ -5,13 +5,13 @@
 import 'dart:async' as _i7;
 
 import 'package:bloc/bloc.dart' as _i9;
-import 'package:core/domain/entities/movie/movie.dart' as _i8;
 import 'package:core/domain/usecases/get_watchlist.dart' as _i2;
 import 'package:core/domain/usecases/get_watchlist_status.dart' as _i3;
 import 'package:core/domain/usecases/remove_watchlist.dart' as _i5;
 import 'package:core/domain/usecases/save_watchlist.dart' as _i4;
 import 'package:core/presentation/cubit/watchlist_cubit.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:movie/domain/entities/movie.dart' as _i8;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters

@@ -9,4 +9,4 @@ const aboutRoute = '/about';
 const popularTvSeriesRoute = '/popular-tv';
 const topRatedTvSeriesRoute = '/top-rated-tv';
 const tvSeriesDetailRoute = '/tv-series-detail';
-const searchTvSeriesRoute = '/search-tv';
+const searchTvSeriesRoute = '/tv-search';

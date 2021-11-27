@@ -10,6 +10,10 @@ environment:
 dependencies:
   core:
     path: ../core
+  movie:
+    path: ../movie
+  tv_series:
+    path: ../tv_series
   dartz: ^0.10.0
   equatable: ^2.0.3
   firebase_crashlytics: ^2.3.0
@@ -22,11 +26,12 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^8.5.0
-  build_runner: ^2.1.4
+  build_runner: ^2.1.5
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
   mockito: ^5.0.16
+  mocktail: ^0.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
