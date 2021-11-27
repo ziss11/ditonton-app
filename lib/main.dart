@@ -30,6 +30,7 @@ import 'package:tv_series/presentation/pages/tv_series_detail_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   di.init(await getHttpClient());
   runApp(MyApp());
 }

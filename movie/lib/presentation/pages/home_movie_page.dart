@@ -88,6 +88,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
         title: const Text('Ditonton'),
         actions: [
           IconButton(
+            key: const Key('search_icon'),
             onPressed: () {
               Navigator.pushNamed(context, searchMovieRoute);
             },
@@ -114,6 +115,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (nowPlaying is MovieNowPlayingLoaded) {
                   return MovieList(
+                    key: const Key('now_playing_list'),
                     movies: nowPlaying.nowPlayingMovie,
                   );
                 } else {
@@ -134,6 +136,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (popular is MoviePopularLoaded) {
                   return MovieList(
+                    key: const Key('popular_list'),
                     movies: popular.popularMovie,
                   );
                 } else {
@@ -154,6 +157,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (top is MovieTopRatedLoaded) {
                   return MovieList(
+                    key: const Key('top_rated_list'),
                     movies: top.topRatedMovie,
                   );
                 } else {
@@ -209,7 +213,6 @@ class MovieList extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.all(8),
             child: InkWell(
-              key: Key(movie.title!),
               onTap: () {
                 Navigator.pushNamed(
                   context,
@@ -218,9 +221,9 @@ class MovieList extends StatelessWidget {
                 );
               },
               child: ClipRRect(
-                key: Key(movie.posterPath!),
                 borderRadius: const BorderRadius.all(Radius.circular(16)),
                 child: CachedNetworkImage(
+                  key: Key(movie.title!),
                   imageUrl: '$baseImageUrl${movie.posterPath}',
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),

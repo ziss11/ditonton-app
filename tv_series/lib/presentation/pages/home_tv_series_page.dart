@@ -93,6 +93,7 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
         title: const Text('Ditonton'),
         actions: [
           IconButton(
+            key: const Key('search_icon'),
             onPressed: () {
               Navigator.pushNamed(context, searchTvSeriesRoute);
             },
@@ -121,7 +122,10 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (nowPlaying is TvSeriesNowPlayingLoaded) {
-                  return TvSeriesList(tvSeries: nowPlaying.nowPlayingTvSeries);
+                  return TvSeriesList(
+                    key: const Key('now_playing_list'),
+                    tvSeries: nowPlaying.nowPlayingTvSeries,
+                  );
                 } else {
                   return const Text('Failed');
                 }
@@ -139,7 +143,10 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (popular is TvSeriesPopularLoaded) {
-                  return TvSeriesList(tvSeries: popular.popularTvSeries);
+                  return TvSeriesList(
+                    key: const Key('popular_list'),
+                    tvSeries: popular.popularTvSeries,
+                  );
                 } else {
                   return const Text('Failed');
                 }
@@ -157,7 +164,10 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (top is TvSeriesTopRatedLoaded) {
-                  return TvSeriesList(tvSeries: top.topRatedTv);
+                  return TvSeriesList(
+                    key: const Key('top_rated_list'),
+                    tvSeries: top.topRatedTv,
+                  );
                 } else {
                   return const Text('Failed');
                 }
