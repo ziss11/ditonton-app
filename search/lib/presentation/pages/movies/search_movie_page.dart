@@ -16,14 +16,6 @@ class SearchMoviePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search'),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          key: const Key('back_button'),
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -60,7 +52,6 @@ class SearchMoviePage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
                         return MovieCard(
-                          key: const Key('goto_detail'),
                           movie: movie.result[index],
                         );
                       },
