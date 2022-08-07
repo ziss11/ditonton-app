@@ -1,0 +1,15 @@
+{
+    "episodes": [
+        {
+            "air_date": "airDate",
+            "episode_number":0,
+            "id": 1,
+            "name": "name",
+            "overview": "overview",
+            "season_number": 0,
+            "still_path": "stillPath",
+            "vote_average": 0.0,
+            "vote_count": 0
+        }
+    ]
+}
