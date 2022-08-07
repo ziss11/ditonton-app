@@ -1,5 +1,8 @@
 name: movie
 description: A new Flutter package project.
+
+publish_to: 'none'
+
 version: 0.0.1
 homepage:
 
@@ -23,6 +26,7 @@ dependencies:
   http: ^0.13.3
   rxdart: ^0.27.2
   sqflite: ^2.0.0+3
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   bloc_test: ^8.5.0
@@ -40,8 +44,7 @@ flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  # - .env
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

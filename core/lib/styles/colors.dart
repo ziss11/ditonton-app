@@ -9,9 +9,9 @@ const Color kGrey = Color(0xFF303030);
 
 const kColorScheme = ColorScheme(
   primary: kMikadoYellow,
-  primaryVariant: kMikadoYellow,
+  primaryContainer: kMikadoYellow,
   secondary: kPrussianBlue,
-  secondaryVariant: kPrussianBlue,
+  secondaryContainer: kPrussianBlue,
   surface: kRichBlack,
   background: kRichBlack,
   error: Colors.red,

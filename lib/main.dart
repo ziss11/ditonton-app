@@ -2,9 +2,11 @@ import 'package:about/about_page.dart';
 import 'package:core/core.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/watchlist_page.dart';
+import 'package:ditonton/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie/presentation/cubit/movie_detail_cubit.dart';
 import 'package:movie/presentation/cubit/movie_now_playing_cubit.dart';
 import 'package:movie/presentation/cubit/movie_popular_cubit.dart';
@@ -13,8 +15,6 @@ import 'package:movie/presentation/pages/home_movie_page.dart';
 import 'package:movie/presentation/pages/movie_detail_page.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
-import 'package:provider/provider.dart';
-import 'package:ditonton/injection.dart' as di;
 import 'package:search/search.dart';
 import 'package:tv_series/presentation/cubit/episode_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
@@ -31,6 +31,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  await dotenv.load(fileName: '.env');
+
   di.init(await getHttpClient());
   runApp(MyApp());
 }
@@ -38,7 +40,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => di.locator<EpisodeCubit>(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:tv_series/presentation/cubit/tv_series_now_playing_cubit.dart';
 import 'package:tv_series/presentation/widget/tv_card_list.dart';
 

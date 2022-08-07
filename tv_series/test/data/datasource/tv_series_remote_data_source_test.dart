@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:core/core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
+import 'package:mockito/mockito.dart';
 import 'package:tv_series/data/datasource/tv_series_remote_data_source.dart';
 import 'package:tv_series/data/models/epidose_response.dart';
 import 'package:tv_series/data/models/tv_series_detail_model.dart';
@@ -33,7 +34,8 @@ void main() {
         'should return Now Playing Tv Series List when response status code is 200',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/on_the_air?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/on_the_air?api_key=${dotenv.env['api_key']}')))
           .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/tv_series_now_playing.json'),
@@ -52,7 +54,8 @@ void main() {
     test('should throw a Server Exception when response code is 404 or other',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/on_the_air?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/on_the_air?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final call = dataSource.getNowPlayingTvSeries();
@@ -69,7 +72,8 @@ void main() {
         'should return Model of Tv Series Popular List when response status code is 200',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/popular?api_key=${dotenv.env['api_key']}')))
           .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/tv_series_popular.json'),
@@ -88,7 +92,8 @@ void main() {
     test('should throw a Server Exception when response code is 404 or other',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/popular?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/popular?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final call = dataSource.getPopularTvSeries();
@@ -104,8 +109,8 @@ void main() {
     test('should return Recommended Tv Series List when response code is 200',
         () async {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/$tId/recommendations?api_key=${dotenv.env['api_key']}')))
           .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/tv_series_recommendation.json'),
@@ -124,8 +129,8 @@ void main() {
     test('should return Server Exception when response code is 404 or other',
         () {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/tv/$tId/recommendations?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/$tId/recommendations?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final call = dataSource.getRecommendationTvSeries(tId);
@@ -140,7 +145,9 @@ void main() {
 
     test('should return Detail Tv Series when response body is 200', () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey'))).thenAnswer(
+      when(mockIOClient.get(
+              Uri.parse('$baseUrl/tv/$tId?api_key=${dotenv.env['api_key']}')))
+          .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/tv_series_detail.json'),
           200,
@@ -158,7 +165,8 @@ void main() {
     test('should return Server Exception when response body is 404 or other',
         () {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/$tId?$apiKey')))
+      when(mockIOClient.get(
+              Uri.parse('$baseUrl/tv/$tId?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final result = dataSource.getDetailTvSeries(tId);
@@ -177,8 +185,8 @@ void main() {
     test('should return Searc Tv Series List when response code is 200',
         () async {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/search/tv?api_key=${dotenv.env['api_key']}&query=$tQuery')))
           .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/search_tv_series.json'),
@@ -197,8 +205,8 @@ void main() {
     test('should return Server Exception when response body is 404 or other',
         () {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/search/tv?$apiKey&query=$tQuery')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/search/tv?api_key=${dotenv.env['api_key']}&query=$tQuery')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final result = dataSource.searchTvSeries(tQuery);
@@ -214,7 +222,8 @@ void main() {
     test('should return Searc Tv Series List when response code is 200',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/top_rated?api_key=${dotenv.env['api_key']}')))
           .thenAnswer(
         (_) async => http.Response(
           readJson('dummy_data/tv_series_top_rated.json'),
@@ -232,7 +241,8 @@ void main() {
     test('should throw a Server Exception when response code is 404 or other',
         () async {
       //arrange
-      when(mockIOClient.get(Uri.parse('$baseUrl/tv/top_rated?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/top_rated?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final call = dataSource.getTopRatedTvSeries();
@@ -249,8 +259,8 @@ void main() {
     test('should return Searc Tv Series List when response code is 200',
         () async {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/tv/$tId/season/$tSeason?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/$tId/season/$tSeason?api_key=${dotenv.env['api_key']}')))
           .thenAnswer(
         (_) async =>
             http.Response(readJson('dummy_data/tv_series_episode.json'), 200),
@@ -263,8 +273,8 @@ void main() {
     test('should throw a Server Exception when response code is 404 or other',
         () async {
       //arrange
-      when(mockIOClient
-              .get(Uri.parse('$baseUrl/tv/$tId/season/$tSeason?$apiKey')))
+      when(mockIOClient.get(Uri.parse(
+              '$baseUrl/tv/$tId/season/$tSeason?api_key=${dotenv.env['api_key']}')))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       //act
       final call = dataSource.getTvSeriesEpisode(tId, tSeason);

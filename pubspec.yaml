@@ -37,6 +37,7 @@ dependencies:
   mocktail: ^0.2.0
   search:
     path: search
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   build_runner: ^2.1.5

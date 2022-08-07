@@ -4,7 +4,6 @@ import 'package:core/styles/text_style.dart';
 import 'package:core/utils/constants.dart';
 import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/domain/entities/movie.dart';
 import 'package:movie/presentation/cubit/movie_now_playing_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:movie/presentation/cubit/movie_popular_cubit.dart';
 import 'package:movie/presentation/cubit/movie_top_rated_cubit.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
-import 'package:provider/provider.dart';
 import 'package:tv_series/presentation/pages/home_tv_series_page.dart';
 
 import 'movie_detail_page.dart';

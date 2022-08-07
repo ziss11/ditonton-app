@@ -2,7 +2,6 @@ import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/presentation/widget/movie_card_list.dart';
-import 'package:provider/provider.dart';
 import 'package:tv_series/domain/entities/tv_series.dart';
 import 'package:tv_series/presentation/widget/tv_card_list.dart';
 

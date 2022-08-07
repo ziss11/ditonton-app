@@ -5,7 +5,6 @@ import 'package:core/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/presentation/pages/home_movie_page.dart';
-import 'package:provider/provider.dart';
 import 'package:tv_series/domain/entities/tv_series.dart';
 import 'package:tv_series/presentation/cubit/tv_series_now_playing_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_popular_cubit.dart';
