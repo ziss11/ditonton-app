@@ -46,9 +46,11 @@ class SearchTvSeriesPage extends StatelessWidget {
                 } else if (state is SearchTvSeriesHasData) {
                   return Expanded(
                     child: ListView.builder(
+                      key: const Key('search_list'),
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
                         return TvCard(
+                          key: Key(state.result[index].title!),
                           tvSeries: state.result[index],
                         );
                       },

@@ -17,6 +17,9 @@ void main() {
   late MockIOClient mockIOClient;
 
   setUp(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    dotenv.testLoad();
+
     mockIOClient = MockIOClient();
     dataSource = MovieRemoteDataSourceImpl(client: mockIOClient);
   });

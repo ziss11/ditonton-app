@@ -50,24 +50,33 @@ class _WatchlistMoviesPageState extends State<WatchlistPage> {
                 child: CircularProgressIndicator(),
               );
             } else if (watchlist is WatchlistLoaded) {
-              return ListView.builder(
-                itemBuilder: (context, index) {
-                  final data = watchlist.watchlist[index];
-                  final tvWatchlist = TvSeries.watchlist(
-                    id: data.id,
-                    overview: data.overview,
-                    posterPath: data.posterPath,
-                    title: data.title,
-                    type: data.type,
-                  );
-                  if (data.type == 'Movie') {
-                    return MovieCard(movie: data);
-                  } else {
-                    return TvCard(tvSeries: tvWatchlist);
-                  }
-                },
-                itemCount: watchlist.watchlist.length,
-              );
+              if (watchlist.watchlist.isNotEmpty) {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    final data = watchlist.watchlist[index];
+                    final tvWatchlist = TvSeries.watchlist(
+                      id: data.id,
+                      overview: data.overview,
+                      posterPath: data.posterPath,
+                      title: data.title,
+                      type: data.type,
+                    );
+                    if (data.type == 'Movie') {
+                      return MovieCard(movie: data);
+                    } else {
+                      return TvCard(tvSeries: tvWatchlist);
+                    }
+                  },
+                  itemCount: watchlist.watchlist.length,
+                );
+              } else {
+                return const Center(
+                  key: Key('empty_message'),
+                  child: Text(
+                    'Watchlist is Empty',
+                  ),
+                );
+              }
             } else if (watchlist is WatchlistMessage) {
               return SizedBox(
                 height: MediaQuery.of(context).size.height / 2,
