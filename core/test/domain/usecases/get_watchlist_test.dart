@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie/domain/entities/movie.dart';
 
-import '../../../../tv_series/test/dummy_data/dummy_tv_series_object.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
@@ -16,24 +15,24 @@ void main() {
     usecase = GetWatchlist(mockMovieRepository);
   });
 
-  final tMovie = Movie(
+  final tMovie = Movie.watchlist(
     type: 'Movie',
-    adult: false,
-    backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: const [14, 28],
     id: 1,
-    originalTitle: 'Spider-Man',
     overview: 'overview',
-    popularity: 60.441,
     posterPath: 'posterPath',
-    releaseDate: '2002-05-01',
     title: 'title',
-    video: false,
-    voteAverage: 7.2,
-    voteCount: 13507,
+  );
+
+  final tTvSeriesToMovie = Movie.watchlist(
+    type: 'Tv',
+    id: 1,
+    overview: "overview",
+    posterPath: "posterPath",
+    title: "title",
   );
 
   final tMovieList = [tMovie];
+  final tTvSeriesList = [tTvSeriesToMovie];
   test('should get list of movies from the repository', () async {
     // arrange
     when(mockMovieRepository.getWatchlist())
@@ -46,6 +45,10 @@ void main() {
   test('should get list of tv series from the repository', () async {
     //arrange
     when(mockMovieRepository.getWatchlist())
-        .thenAnswer((_) async => Right(testTvSeriesList));
+        .thenAnswer((_) async => Right(tTvSeriesList));
+    //act
+    final result = await usecase.execute();
+    // assert
+    expect(result, Right(tTvSeriesList));
   });
 }
