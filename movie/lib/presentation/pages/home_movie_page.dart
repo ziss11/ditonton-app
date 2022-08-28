@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:core/presentation/pages/watchlist_page.dart';
 import 'package:core/styles/text_style.dart';
 import 'package:core/utils/constants.dart';
 import 'package:core/utils/routes.dart';
@@ -11,7 +10,6 @@ import 'package:movie/presentation/cubit/movie_popular_cubit.dart';
 import 'package:movie/presentation/cubit/movie_top_rated_cubit.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
-import 'package:tv_series/presentation/pages/home_tv_series_page.dart';
 
 import 'movie_detail_page.dart';
 
@@ -38,52 +36,9 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: [
-            const UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/circle-g.png'),
-              ),
-              accountName: Text('Ditonton'),
-              accountEmail: Text('ditonton@dicoding.com'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.movie),
-              title: const Text('Movies'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.tv_rounded),
-              title: const Text('Tv Series'),
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  HomeTvSeriesPage.routeName,
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.save_alt),
-              title: const Text('Watchlist'),
-              onTap: () {
-                Navigator.pushNamed(context, WatchlistPage.routeName);
-              },
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, aboutRoute);
-              },
-              leading: const Icon(Icons.info_outline),
-              title: const Text('About'),
-            ),
-          ],
-        ),
-      ),
       appBar: AppBar(
         title: const Text('Ditonton'),
+        leading: const Icon(Icons.menu),
         actions: [
           IconButton(
             key: const Key('search_icon'),

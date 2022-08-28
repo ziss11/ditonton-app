@@ -2,6 +2,7 @@ import 'package:about/about_page.dart';
 import 'package:core/core.dart';
 import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:core/presentation/pages/watchlist_page.dart';
+import 'package:core/presentation/widget/custom_drawer.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,11 @@ class MyApp extends StatelessWidget {
           textTheme: kTextTheme,
           colorScheme: kColorScheme.copyWith(secondary: kMikadoYellow),
         ),
-        home: HomeMoviePage(),
+        home: Material(
+          child: CustomDrawer(
+            content: HomeMoviePage(),
+          ),
+        ),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomeMoviePage.routeName:
