@@ -11,10 +11,10 @@ class WatchlistPage extends StatefulWidget {
   const WatchlistPage({Key? key}) : super(key: key);
 
   @override
-  _WatchlistMoviesPageState createState() => _WatchlistMoviesPageState();
+  State<WatchlistPage> createState() => _WatchlistPageState();
 }
 
-class _WatchlistMoviesPageState extends State<WatchlistPage> {
+class _WatchlistPageState extends State<WatchlistPage> {
   @override
   void initState() {
     super.initState();
