@@ -33,17 +33,35 @@ void main() {
     test('initial state should be empty', () {
       expect(cubit.state, TvSeriesDetailInitial());
     });
+
     blocTest<TvSeriesDetailCubit, TvSeriesDetailState>(
       'should execute tv detail when function called',
       build: () {
         when(mockGetDetailTvSeries.execute(testTvSeries.id))
             .thenAnswer((_) async => const Right(testTvSeriesDetail));
+        when(mockGetRecommendationTvSeries.execute(testTvSeries.id))
+            .thenAnswer((_) async => Right(testTvSeriesList));
 
         return cubit;
       },
       act: (cubit) => cubit.fetchDetailTv(testTvSeries.id!),
       verify: (cubit) => mockGetDetailTvSeries.execute(testTvSeries.id),
     );
+
+    blocTest<TvSeriesDetailCubit, TvSeriesDetailState>(
+      'should execute series recommendation when function called',
+      build: () {
+        when(mockGetDetailTvSeries.execute(testTvSeries.id))
+            .thenAnswer((_) async => const Right(testTvSeriesDetail));
+        when(mockGetRecommendationTvSeries.execute(testTvSeries.id))
+            .thenAnswer((_) async => Right(testTvSeriesList));
+
+        return cubit;
+      },
+      act: (cubit) => cubit.fetchDetailTv(testTvSeries.id!),
+      verify: (cubit) => mockGetDetailTvSeries.execute(testTvSeries.id),
+    );
+
     blocTest<TvSeriesDetailCubit, TvSeriesDetailState>(
       'Should emit [Loading, Loaded] when data is gotten successfully',
       build: () {

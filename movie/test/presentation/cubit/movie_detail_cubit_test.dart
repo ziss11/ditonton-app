@@ -39,6 +39,8 @@ void main() {
       build: () {
         when(mockGetMovieDetail.execute(testMovie.id))
             .thenAnswer((_) async => const Right(testMovieDetail));
+        when(mockGetMovieRecommendations.execute(testMovie.id))
+            .thenAnswer((_) async => Right(testMovieList));
 
         return cubit;
       },
@@ -48,6 +50,8 @@ void main() {
     blocTest<MovieDetailCubit, MovieDetailState>(
       'should execute movie recommendation when function called',
       build: () {
+        when(mockGetMovieDetail.execute(testMovie.id))
+            .thenAnswer((_) async => const Right(testMovieDetail));
         when(mockGetMovieRecommendations.execute(testMovie.id))
             .thenAnswer((_) async => Right(testMovieList));
 

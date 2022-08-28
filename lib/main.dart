@@ -13,7 +13,6 @@ import 'package:movie/presentation/pages/home_movie_page.dart';
 import 'package:movie/presentation/pages/movie_detail_page.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
-import 'package:movie/presentation/widget/custom_drawer.dart';
 import 'package:search/search.dart';
 import 'package:tv_series/presentation/cubit/episode_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
@@ -87,11 +86,7 @@ class MyApp extends StatelessWidget {
           textTheme: kTextTheme,
           colorScheme: kColorScheme.copyWith(secondary: kMikadoYellow),
         ),
-        home: Material(
-          child: CustomDrawer(
-            content: HomeMoviePage(),
-          ),
-        ),
+        home: HomeMoviePage(),
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomeMoviePage.routeName:
