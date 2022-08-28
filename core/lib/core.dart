@@ -1,6 +1,5 @@
 library core;
 
-export 'data/datasources/db/database_helper.dart';
 export 'styles/colors.dart';
 export 'styles/text_style.dart';
 export 'utils/constants.dart';

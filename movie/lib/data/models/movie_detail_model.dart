@@ -1,5 +1,5 @@
-import 'package:core/data/models/genre_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:movie/data/models/genre_model.dart';
 import 'package:movie/domain/entities/movie_detail.dart';
 
 // ignore: must_be_immutable

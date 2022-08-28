@@ -11,37 +11,16 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  about:
-    path: ../about
-  movie:
-    path: ../movie
-  tv_series:
-    path: ../tv_series
-  cached_network_image: ^3.0.0
-  cupertino_icons: ^1.0.2
-  dartz: ^0.10.0
   encrypt: ^5.0.1
   equatable: ^2.0.3
-  firebase_crashlytics: ^2.3.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.3.3
-  flutter_rating_bar: ^4.0.0
   google_fonts: ^2.1.0
-  http: ^0.13.3
-  mocktail: ^0.2.0
-  network_image_mock: ^2.0.1
-  sqflite_sqlcipher: ^2.1.0
-  flutter_dotenv: ^5.0.2
-  path_provider: ^2.0.11
 
 dev_dependencies:
-  bloc_test: ^8.5.0
-  build_runner: ^2.1.5
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.16
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

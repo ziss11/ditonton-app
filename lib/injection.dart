@@ -1,17 +1,11 @@
 import 'dart:io';
 
-import 'package:core/data/datasources/db/database_helper.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/io_client.dart';
 import 'package:movie/data/datasource/movie_local_data_source.dart';
 import 'package:movie/data/datasource/movie_remote_data_source.dart';
 import 'package:movie/data/repositories/movie_repository_impl.dart';
 import 'package:movie/domain/repositories/movie_repository.dart';
-import 'package:core/domain/usecases/get_watchlist.dart';
-import 'package:core/domain/usecases/get_watchlist_status.dart';
-import 'package:core/domain/usecases/remove_watchlist.dart';
-import 'package:core/domain/usecases/save_watchlist.dart';
-import 'package:core/presentation/cubit/watchlist_cubit.dart';
-import 'package:http/io_client.dart';
-import 'package:get_it/get_it.dart';
 import 'package:movie/domain/usecase/get_movie_detail.dart';
 import 'package:movie/domain/usecase/get_movie_recommendations.dart';
 import 'package:movie/domain/usecase/get_now_playing_movies.dart';
@@ -36,6 +30,7 @@ import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_now_playing_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_popular_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_top_rated_cubit.dart';
+import 'package:watchlist/watchlist.dart';
 
 final locator = GetIt.instance;
 

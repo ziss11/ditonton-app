@@ -1,6 +1,6 @@
-import 'package:core/data/models/genre_model.dart';
-import 'package:core/domain/entities/genre.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:movie/data/models/genre_model.dart';
+import 'package:movie/domain/entities/genre.dart';
 
 void main() {
   const tGenreModel = GenreModel(

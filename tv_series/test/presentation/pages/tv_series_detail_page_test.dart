@@ -1,4 +1,3 @@
-import 'package:core/presentation/cubit/watchlist_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +8,7 @@ import 'package:tv_series/presentation/cubit/episode_cubit.dart';
 import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
 import 'package:tv_series/presentation/pages/tv_series_detail_page.dart';
 import 'package:tv_series/presentation/widget/episode_card_list.dart';
+import 'package:watchlist/watchlist.dart';
 
 import '../../dummy_data/dummy_tv_series_object.dart';
 import 'tv_series_detail_page_test.mocks.dart';

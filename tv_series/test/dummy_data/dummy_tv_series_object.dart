@@ -1,4 +1,4 @@
-import 'package:core/domain/entities/genre.dart';
+import 'package:movie/domain/entities/genre.dart';
 import 'package:movie/domain/entities/movie.dart';
 import 'package:tv_series/data/models/tv_series_table.dart';
 import 'package:tv_series/domain/entities/episode.dart';

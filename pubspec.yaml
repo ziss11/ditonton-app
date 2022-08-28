@@ -23,21 +23,25 @@ environment:
 dependencies:
   about:
     path: about
-  bloc_test: ^8.5.0
+  bloc_test: ^9.1.0
   core:
     path: core
-  movie:
-    path: movie
-  tv_series:
-    path: tv_series
   firebase_core: ^1.10.0
   firebase_crashlytics: ^2.3.0
-  flutter_bloc: ^7.3.2
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_dotenv: ^5.0.2
   get_it: ^7.1.3
   mocktail: ^0.2.0
+  movie:
+    path: movie
   search:
     path: search
-  flutter_dotenv: ^5.0.2
+  tv_series:
+    path: tv_series
+  watchlist:
+    path: watchlist
 
 dev_dependencies:
   build_runner: ^2.1.5

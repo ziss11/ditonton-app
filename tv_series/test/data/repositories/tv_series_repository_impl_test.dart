@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:core/core.dart';
-import 'package:core/data/models/genre_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:movie/data/models/genre_model.dart';
 import 'package:tv_series/data/models/episode_model.dart';
 import 'package:tv_series/data/models/season_model.dart';
 import 'package:tv_series/data/models/tv_series_detail_model.dart';

@@ -19,20 +19,21 @@ dependencies:
     path: ../tv_series
   search:
     path: ../search
+  watchlist:
+    path: ../watchlist
   dartz: ^0.10.0
   equatable: ^2.0.3
   firebase_crashlytics: ^2.3.0
-  flutter_bloc: ^7.3.2
+  flutter_bloc: ^8.1.1
   http: ^0.13.3
   rxdart: ^0.27.2
-  sqflite: ^2.0.0+3
   flutter_dotenv: ^5.0.2
   flutter_rating_bar: ^4.0.1
   path_provider: ^2.0.11
 
 dev_dependencies:
-  bloc_test: ^8.5.0
-  build_runner: ^2.1.5
+  bloc_test: ^9.1.0
+  build_runner: ^2.2.0
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
