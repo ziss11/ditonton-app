@@ -5,25 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:movie/presentation/cubit/movie_detail_cubit.dart';
-import 'package:movie/presentation/cubit/movie_now_playing_cubit.dart';
-import 'package:movie/presentation/cubit/movie_popular_cubit.dart';
-import 'package:movie/presentation/cubit/movie_top_rated_cubit.dart';
-import 'package:movie/presentation/pages/home_movie_page.dart';
-import 'package:movie/presentation/pages/movie_detail_page.dart';
-import 'package:movie/presentation/pages/popular_movies_page.dart';
-import 'package:movie/presentation/pages/top_rated_movies_page.dart';
+import 'package:movie/movie.dart';
 import 'package:search/search.dart';
-import 'package:tv_series/presentation/cubit/episode_cubit.dart';
-import 'package:tv_series/presentation/cubit/tv_series_detail_cubit.dart';
-import 'package:tv_series/presentation/cubit/tv_series_now_playing_cubit.dart';
-import 'package:tv_series/presentation/cubit/tv_series_popular_cubit.dart';
-import 'package:tv_series/presentation/cubit/tv_series_top_rated_cubit.dart';
-import 'package:tv_series/presentation/pages/home_tv_series_page.dart';
-import 'package:tv_series/presentation/pages/now_playing_tv_series_page.dart';
-import 'package:tv_series/presentation/pages/popular_tv_series_page.dart';
-import 'package:tv_series/presentation/pages/top_rated_tv_series_page.dart';
-import 'package:tv_series/presentation/pages/tv_series_detail_page.dart';
+import 'package:tv_series/tv_series.dart';
 import 'package:watchlist/watchlist.dart';
 
 void main() async {
