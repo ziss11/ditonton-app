@@ -31,7 +31,7 @@ class SearchMoviesBloc extends Bloc<SearchMoviesEvent, SearchMoviesState> {
     }, transformer: _debounce(const Duration(milliseconds: 500)));
   }
 
-  EventTransformer<OnChangeMovieQuery> _debounce<OnChangeMovieQuery>(
+  EventTransformer<T> _debounce<T>(
           Duration duration) =>
       (events, mapper) => events.debounceTime(duration).flatMap(mapper);
 }

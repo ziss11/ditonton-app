@@ -32,7 +32,7 @@ class SearchTvSeriesBloc
     }, transformer: _debounce(const Duration(milliseconds: 500)));
   }
 
-  EventTransformer<OnChangeTvQuery> _debounce<OnChangeTvQuery>(
+  EventTransformer<T> _debounce<T>(
           Duration duration) =>
       (events, mapper) => events.debounceTime(duration).flatMap(mapper);
 }
