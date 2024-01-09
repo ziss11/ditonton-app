@@ -1,6 +1,5 @@
 part of 'movie_now_playing_cubit.dart';
 
-@immutable
 abstract class MovieNowPlayingState extends Equatable {
   const MovieNowPlayingState();
 

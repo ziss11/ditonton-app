@@ -17,7 +17,7 @@ void main() {
     mockCubit = MockTvSeriesTopRatedCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<TvSeriesTopRatedCubit>.value(
       value: mockCubit,
       child: MaterialApp(
@@ -35,7 +35,7 @@ void main() {
     final loadingWidget = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedTvSeriesPage()));
 
     expect(centerFinder, findsOneWidget);
     expect(loadingWidget, findsOneWidget);
@@ -49,7 +49,7 @@ void main() {
 
     final listViewWidget = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedTvSeriesPage()));
 
     expect(listViewWidget, findsOneWidget);
   });
@@ -63,7 +63,7 @@ void main() {
 
     final textWidget = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedTvSeriesPage()));
 
     expect(textWidget, findsOneWidget);
   });

@@ -1,6 +1,5 @@
 part of 'movie_detail_cubit.dart';
 
-@immutable
 abstract class MovieDetailState extends Equatable {
   const MovieDetailState();
 

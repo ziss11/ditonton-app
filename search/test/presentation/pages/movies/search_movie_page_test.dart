@@ -19,7 +19,7 @@ void main() {
     mockMovieBloc = MockSearchMoviesBloc();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<SearchMoviesBloc>.value(
       value: mockMovieBloc,
       child: MaterialApp(
@@ -36,7 +36,7 @@ void main() {
 
     final loadingWidget = find.byType(CircularProgressIndicator);
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchMoviePage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchMoviePage()));
 
     expect(loadingWidget, findsOneWidget);
   });
@@ -48,7 +48,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchMoviePage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchMoviePage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -60,7 +60,7 @@ void main() {
 
     final emptyMessage = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchMoviePage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchMoviePage()));
 
     expect(emptyMessage, findsOneWidget);
   });
@@ -72,7 +72,7 @@ void main() {
 
     final textfieldFinder = find.byKey(const Key('query_input'));
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchMoviePage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchMoviePage()));
     await tester.enterText(textfieldFinder, 'Venom');
     await tester.testTextInput.receiveAction(TextInputAction.done);
 

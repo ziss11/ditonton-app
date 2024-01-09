@@ -24,7 +24,7 @@ void main() {
     mockMovieDetailCubit = MockMovieDetailCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<MovieDetailCubit>.value(
       value: mockMovieDetailCubit,
       child: BlocProvider<WatchlistCubit>.value(
@@ -49,7 +49,7 @@ void main() {
       final loadingFinder = find.byType(CircularProgressIndicator);
 
       await tester
-          .pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
       expect(loadingFinder, findsOneWidget);
     },
   );
@@ -68,7 +68,7 @@ void main() {
       final errorFinder = find.text('Error Message');
 
       await tester
-          .pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
       expect(errorFinder, findsOneWidget);
     },
   );
@@ -86,7 +86,7 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -104,7 +104,7 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -124,7 +124,7 @@ void main() {
     when(mockWatchlistCubit.state)
         .thenReturn(const WatchlistMessage('Added to Watchlist'));
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -146,7 +146,7 @@ void main() {
     when(mockWatchlistCubit.state)
         .thenReturn(const WatchlistMessage('Removed from Watchlist'));
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -167,7 +167,7 @@ void main() {
         .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
     when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(AlertDialog), findsOneWidget);
@@ -188,7 +188,7 @@ void main() {
         .thenAnswer((_) => Stream.value(const WatchlistMessage('Failed')));
     when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
-    await tester.pumpWidget(_makeTestableWidget(const MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(AlertDialog), findsOneWidget);

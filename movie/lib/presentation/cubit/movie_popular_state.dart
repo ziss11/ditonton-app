@@ -1,6 +1,5 @@
 part of 'movie_popular_cubit.dart';
 
-@immutable
 abstract class MoviePopularState extends Equatable {
   const MoviePopularState();
 

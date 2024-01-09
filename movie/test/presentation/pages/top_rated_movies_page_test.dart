@@ -17,7 +17,7 @@ void main() {
     mockCubit = MockMovieTopRatedCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<MovieTopRatedCubit>.value(
       value: mockCubit,
       child: MaterialApp(
@@ -35,7 +35,7 @@ void main() {
     final progressFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedMoviesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedMoviesPage()));
 
     expect(centerFinder, findsOneWidget);
     expect(progressFinder, findsOneWidget);
@@ -49,7 +49,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedMoviesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedMoviesPage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -62,7 +62,7 @@ void main() {
 
     final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const TopRatedMoviesPage()));
+    await tester.pumpWidget(makeTestableWidget(const TopRatedMoviesPage()));
 
     expect(textFinder, findsOneWidget);
   });

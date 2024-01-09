@@ -7,7 +7,7 @@ import 'package:tv_series/presentation/pages/tv_series_detail_page.dart';
 class TvCard extends StatelessWidget {
   final TvSeries tvSeries;
 
-  const TvCard({Key? key, required this.tvSeries}) : super(key: key);
+  const TvCard({super.key, required this.tvSeries});
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +56,7 @@ class TvCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: CachedNetworkImage(
                   imageUrl: '$baseImageUrl${tvSeries.posterPath}',
                   width: 80,
@@ -64,7 +65,6 @@ class TvCard extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
             ),
           ],

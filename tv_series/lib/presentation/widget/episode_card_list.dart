@@ -9,10 +9,10 @@ class EpisodeCardList extends StatefulWidget {
   final int season;
 
   const EpisodeCardList({
-    Key? key,
+    super.key,
     required this.id,
     required this.season,
-  }) : super(key: key);
+  });
 
   @override
   State<EpisodeCardList> createState() => _EpisodeCardListState();

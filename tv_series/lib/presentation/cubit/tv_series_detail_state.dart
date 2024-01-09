@@ -1,6 +1,5 @@
 part of 'tv_series_detail_cubit.dart';
 
-@immutable
 abstract class TvSeriesDetailState extends Equatable {
   const TvSeriesDetailState();
 

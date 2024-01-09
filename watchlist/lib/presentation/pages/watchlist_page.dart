@@ -8,7 +8,7 @@ import 'package:watchlist/presentation/cubit/watchlist_cubit.dart';
 class WatchlistPage extends StatefulWidget {
   static const routeName = '/watchlist';
 
-  const WatchlistPage({Key? key}) : super(key: key);
+  const WatchlistPage({super.key});
 
   @override
   State<WatchlistPage> createState() => _WatchlistPageState();

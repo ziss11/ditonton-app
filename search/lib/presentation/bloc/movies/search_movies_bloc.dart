@@ -1,9 +1,8 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/domain/entities/movie.dart';
-import 'package:search/search.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:search/search.dart';
 
 part 'search_movies_event.dart';
 part 'search_movies_state.dart';
@@ -31,7 +30,6 @@ class SearchMoviesBloc extends Bloc<SearchMoviesEvent, SearchMoviesState> {
     }, transformer: _debounce(const Duration(milliseconds: 500)));
   }
 
-  EventTransformer<T> _debounce<T>(
-          Duration duration) =>
+  EventTransformer<T> _debounce<T>(Duration duration) =>
       (events, mapper) => events.debounceTime(duration).flatMap(mapper);
 }

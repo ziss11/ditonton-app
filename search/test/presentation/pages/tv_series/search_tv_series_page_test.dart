@@ -19,7 +19,7 @@ void main() {
     mockTvBloc = MockSearchTvSeriesBloc();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<SearchTvSeriesBloc>.value(
       value: mockTvBloc,
       child: MaterialApp(
@@ -36,7 +36,7 @@ void main() {
 
     final loadingWidget = find.byType(CircularProgressIndicator);
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchTvSeriesPage()));
 
     expect(loadingWidget, findsOneWidget);
   });
@@ -48,7 +48,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchTvSeriesPage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -60,7 +60,7 @@ void main() {
 
     final emptyMessage = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchTvSeriesPage()));
 
     expect(emptyMessage, findsOneWidget);
   });
@@ -72,7 +72,7 @@ void main() {
 
     final textfieldFinder = find.byKey(const Key('query_input'));
 
-    await tester.pumpWidget(_makeTestableWidget(const SearchTvSeriesPage()));
+    await tester.pumpWidget(makeTestableWidget(const SearchTvSeriesPage()));
     await tester.enterText(textfieldFinder, 'Venom');
     await tester.testTextInput.receiveAction(TextInputAction.done);
 

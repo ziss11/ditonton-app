@@ -1,6 +1,5 @@
 part of 'tv_series_now_playing_cubit.dart';
 
-@immutable
 abstract class TvSeriesNowPlayingState extends Equatable {
   const TvSeriesNowPlayingState();
 

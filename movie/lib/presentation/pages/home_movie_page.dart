@@ -18,10 +18,10 @@ import 'movie_detail_page.dart';
 class HomeMoviePage extends StatefulWidget {
   static const routeName = '/home-movies';
 
-  const HomeMoviePage({Key? key}) : super(key: key);
+  const HomeMoviePage({super.key});
 
   @override
-  _HomeMoviePageState createState() => _HomeMoviePageState();
+  State<HomeMoviePage> createState() => _HomeMoviePageState();
 }
 
 class _HomeMoviePageState extends State<HomeMoviePage> {
@@ -179,10 +179,10 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
         ),
         InkWell(
           onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
-              children: const [
+              children: [
                 Text('See More'),
                 Icon(Icons.arrow_forward_ios),
               ],
@@ -197,7 +197,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
 class MovieList extends StatelessWidget {
   final List<Movie>? movies;
 
-  const MovieList({Key? key, required this.movies}) : super(key: key);
+  const MovieList({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {

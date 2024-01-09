@@ -1,8 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import 'package:search/domain/usecases/tv_series/search_tv_series.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:search/domain/usecases/tv_series/search_tv_series.dart';
 import 'package:tv_series/domain/entities/tv_series.dart';
 
 part 'search_tv_series_event.dart';
@@ -32,7 +31,6 @@ class SearchTvSeriesBloc
     }, transformer: _debounce(const Duration(milliseconds: 500)));
   }
 
-  EventTransformer<T> _debounce<T>(
-          Duration duration) =>
+  EventTransformer<T> _debounce<T>(Duration duration) =>
       (events, mapper) => events.debounceTime(duration).flatMap(mapper);
 }

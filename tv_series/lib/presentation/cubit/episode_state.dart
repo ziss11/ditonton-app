@@ -1,6 +1,5 @@
 part of 'episode_cubit.dart';
 
-@immutable
 abstract class EpisodeState extends Equatable {
   const EpisodeState();
 

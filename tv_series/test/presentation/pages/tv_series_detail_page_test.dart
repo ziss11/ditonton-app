@@ -29,7 +29,7 @@ void main() {
     mockEpisodeCubit = MockEpisodeCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<TvSeriesDetailCubit>.value(
       value: mockTvSeriesDetailCubit,
       child: BlocProvider<WatchlistCubit>.value(
@@ -57,7 +57,7 @@ void main() {
       final loadingFinder = find.byType(CircularProgressIndicator);
 
       await tester
-          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
       expect(loadingFinder, findsOneWidget);
     },
   );
@@ -75,7 +75,7 @@ void main() {
       final errorFinder = find.text('Error Message');
 
       await tester
-          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
       expect(errorFinder, findsOneWidget);
     },
   );
@@ -97,7 +97,7 @@ void main() {
       final watchlistButtonIcon = find.byIcon(Icons.add);
 
       await tester
-          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
       expect(watchlistButtonIcon, findsOneWidget);
     },
@@ -120,7 +120,7 @@ void main() {
       final watchlistButtonIcon = find.byIcon(Icons.check);
 
       await tester
-          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
       expect(watchlistButtonIcon, findsOneWidget);
     },
@@ -142,7 +142,7 @@ void main() {
         .thenReturn(const WatchlistMessage('Added to Watchlist'));
 
     await tester
-        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+        .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -165,7 +165,7 @@ void main() {
         .thenReturn(const WatchlistMessage('Removed from Watchlist'));
 
     await tester
-        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+        .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -187,7 +187,7 @@ void main() {
     when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
     await tester
-        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+        .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
     await tester.pump();
 
@@ -210,7 +210,7 @@ void main() {
     when(mockWatchlistCubit.state).thenReturn(const WatchlistMessage('Failed'));
 
     await tester
-        .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+        .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
     await tester.pump();
 
@@ -236,7 +236,7 @@ void main() {
       final detailEpisodeCard = find.byType(EpisodeCardList);
 
       await tester
-          .pumpWidget(_makeTestableWidget(const TvSeriesDetailPage(id: 1)));
+          .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
 
       expect(seasonTabbar, findsOneWidget);
       await tester.pump();

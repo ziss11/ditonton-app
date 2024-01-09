@@ -1,10 +1,11 @@
 import 'package:about/about_page.dart';
 import 'package:core/core.dart';
-import 'package:ditonton/injection.dart' as di;
+import 'package:ditonton/injection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_it/get_it.dart';
 import 'package:movie/movie.dart';
 import 'package:search/search.dart';
 import 'package:tv_series/tv_series.dart';
@@ -16,7 +17,7 @@ void main() async {
 
   await dotenv.load(fileName: '.env');
 
-  di.init(await getHttpClient());
+  Injection.init(await getHttpClient());
   runApp(MyApp());
 }
 
@@ -26,40 +27,40 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => di.locator<EpisodeCubit>(),
+          create: (_) => GetIt.I<EpisodeCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<MovieNowPlayingCubit>(),
+          create: (_) => GetIt.I<MovieNowPlayingCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<MoviePopularCubit>(),
+          create: (_) => GetIt.I<MoviePopularCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<MovieTopRatedCubit>(),
+          create: (_) => GetIt.I<MovieTopRatedCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<MovieDetailCubit>(),
+          create: (_) => GetIt.I<MovieDetailCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<WatchlistCubit>(),
+          create: (_) => GetIt.I<WatchlistCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<TvSeriesDetailCubit>(),
+          create: (_) => GetIt.I<TvSeriesDetailCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<TvSeriesNowPlayingCubit>(),
+          create: (_) => GetIt.I<TvSeriesNowPlayingCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<TvSeriesPopularCubit>(),
+          create: (_) => GetIt.I<TvSeriesPopularCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<TvSeriesTopRatedCubit>(),
+          create: (_) => GetIt.I<TvSeriesTopRatedCubit>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<SearchMoviesBloc>(),
+          create: (_) => GetIt.I<SearchMoviesBloc>(),
         ),
         BlocProvider(
-          create: (_) => di.locator<SearchTvSeriesBloc>(),
+          create: (_) => GetIt.I<SearchTvSeriesBloc>(),
         )
       ],
       child: MaterialApp(

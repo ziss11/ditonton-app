@@ -16,7 +16,7 @@ void main() {
     mockCubit = MockWatchlistCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<WatchlistCubit>.value(
       value: mockCubit,
       child: MaterialApp(
@@ -33,7 +33,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_makeTestableWidget(const WatchlistPage()));
+    await tester.pumpWidget(makeTestableWidget(const WatchlistPage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -46,7 +46,7 @@ void main() {
 
     final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const WatchlistPage()));
+    await tester.pumpWidget(makeTestableWidget(const WatchlistPage()));
 
     expect(textFinder, findsOneWidget);
   });
@@ -58,7 +58,7 @@ void main() {
 
     final textFinder = find.byKey(const Key('empty_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(const WatchlistPage()));
+    await tester.pumpWidget(makeTestableWidget(const WatchlistPage()));
 
     expect(textFinder, findsOneWidget);
   });

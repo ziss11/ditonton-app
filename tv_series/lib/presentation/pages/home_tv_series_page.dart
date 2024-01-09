@@ -18,10 +18,10 @@ import 'now_playing_tv_series_page.dart';
 class HomeTvSeriesPage extends StatefulWidget {
   static const routeName = '/home-tvseries';
 
-  const HomeTvSeriesPage({Key? key}) : super(key: key);
+  const HomeTvSeriesPage({super.key});
 
   @override
-  _HomeTvSeriesPageState createState() => _HomeTvSeriesPageState();
+  State<HomeTvSeriesPage> createState() => _HomeTvSeriesPageState();
 }
 
 class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
@@ -188,10 +188,10 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
         ),
         InkWell(
           onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Row(
-              children: const [Text('See More'), Icon(Icons.arrow_forward_ios)],
+              children: [Text('See More'), Icon(Icons.arrow_forward_ios)],
             ),
           ),
         ),
@@ -203,7 +203,7 @@ class _HomeTvSeriesPageState extends State<HomeTvSeriesPage> {
 class TvSeriesList extends StatelessWidget {
   final List<TvSeries> tvSeries;
 
-  const TvSeriesList({Key? key, required this.tvSeries}) : super(key: key);
+  const TvSeriesList({super.key, required this.tvSeries});
 
   @override
   Widget build(BuildContext context) {

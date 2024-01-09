@@ -7,37 +7,36 @@ version: 0.0.1
 homepage: null
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
-  flutter: ">=1.17.0"
+    sdk: '>=3.2.3 <4.0.0'
+    flutter: '>=1.17.0'
 
 dependencies:
-  core:
-    path: ../core
-  dartz: ^0.10.0
-  equatable: ^2.0.3
-  flutter:
-    sdk: flutter
-  flutter_bloc: ^8.1.1
-  movie:
-    path: ../movie
-  path_provider: ^2.0.11
-  sqflite_sqlcipher: ^2.1.0
-  tv_series:
-    path: ../tv_series
+    core:
+        path: ../core
+    dartz: ^0.10.0
+    equatable: ^2.0.3
+    flutter:
+        sdk: flutter
+    flutter_bloc: ^8.1.1
+    movie:
+        path: ../movie
+    path_provider: ^2.0.11
+    sqflite_sqlcipher: ^2.1.0
+    tv_series:
+        path: ../tv_series
 
 dev_dependencies:
-  bloc_test: ^9.1.0
-  build_runner: ^2.2.0
-  flutter_lints: ^2.0.0
-  flutter_test:
-    sdk: flutter
-  mockito: ^5.3.0
+    bloc_test: ^9.1.0
+    build_runner: ^2.2.0
+    flutter_lints: ^3.0.1
+    flutter_test:
+        sdk: flutter
+    mockito: ^5.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter: null
-
 # To add assets to your package, add an assets section, like this:
 # assets:
 #   - images/a_dot_burr.jpeg

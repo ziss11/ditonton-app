@@ -1,6 +1,5 @@
 part of 'search_movies_bloc.dart';
 
-@immutable
 abstract class SearchMoviesEvent extends Equatable {
   const SearchMoviesEvent();
 

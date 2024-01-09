@@ -1,6 +1,5 @@
 part of 'search_tv_series_bloc.dart';
 
-@immutable
 abstract class SearchTvSeriesState extends Equatable {
   const SearchTvSeriesState();
 

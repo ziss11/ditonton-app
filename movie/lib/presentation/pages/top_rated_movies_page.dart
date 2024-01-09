@@ -6,10 +6,10 @@ import 'package:movie/presentation/widget/movie_card_list.dart';
 class TopRatedMoviesPage extends StatefulWidget {
   static const routeName = '/top-rated-movie';
 
-  const TopRatedMoviesPage({Key? key}) : super(key: key);
+  const TopRatedMoviesPage({super.key});
 
   @override
-  _TopRatedMoviesPageState createState() => _TopRatedMoviesPageState();
+  State<TopRatedMoviesPage> createState() => _TopRatedMoviesPageState();
 }
 
 class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {

@@ -14,7 +14,7 @@ class TvSeriesDetailPage extends StatefulWidget {
   static const routeName = '/tv-series-detail';
 
   final int id;
-  const TvSeriesDetailPage({Key? key, required this.id}) : super(key: key);
+  const TvSeriesDetailPage({super.key, required this.id});
 
   @override
   State<TvSeriesDetailPage> createState() => _TvSeriesDetailPageState();
@@ -98,10 +98,10 @@ class DetailTvContent extends StatefulWidget {
   final bool isAddedWatchlist;
 
   const DetailTvContent({
-    Key? key,
+    super.key,
     required this.tv,
     required this.isAddedWatchlist,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailTvContent> createState() => _DetailTvContentState();
@@ -343,7 +343,7 @@ class _DetailTvContentState extends State<DetailTvContent>
   String _showGenres(List<Genre> genres) {
     String result = '';
     for (var genre in genres) {
-      result += genre.name + ', ';
+      result += '${genre.name}, ';
     }
 
     if (result.isEmpty) {

@@ -17,7 +17,7 @@ void main() {
     mockCubit = MockEpisodeCubit();
   });
 
-  Widget _makeTestableWidget(Widget body) {
+  Widget makeTestableWidget(Widget body) {
     return BlocProvider<EpisodeCubit>.value(
       value: mockCubit,
       child: MaterialApp(
@@ -35,7 +35,7 @@ void main() {
       final messageFinder = find.byKey(const Key('empty_message'));
 
       await tester.pumpWidget(
-          _makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
+          makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
 
       expect(messageFinder, findsOneWidget);
     },
@@ -50,7 +50,7 @@ void main() {
       final progressBarFinder = find.byType(CircularProgressIndicator);
 
       await tester.pumpWidget(
-          _makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
+          makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
 
       expect(progressBarFinder, findsOneWidget);
     },
@@ -66,7 +66,7 @@ void main() {
       final listFinder = find.byKey(const Key('episode_list'));
 
       await tester.pumpWidget(
-          _makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
+          makeTestableWidget(const EpisodeCardList(id: 1, season: 1)));
 
       expect(listFinder, findsOneWidget);
     },

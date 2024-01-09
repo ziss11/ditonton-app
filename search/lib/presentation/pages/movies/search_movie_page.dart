@@ -8,7 +8,7 @@ import 'package:search/search.dart';
 class SearchMoviePage extends StatelessWidget {
   static const routeName = '/movie-search';
 
-  const SearchMoviePage({Key? key}) : super(key: key);
+  const SearchMoviePage({super.key});
 
   @override
   Widget build(BuildContext context) {
